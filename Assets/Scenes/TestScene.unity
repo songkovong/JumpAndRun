@@ -265,16 +265,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.5
   runSpeed: 5
+  finalSpeed: 0
+  currentSpeed: 0
   rotationSpeed: 500
-  runRotationSpeed: 1000
+  runRotationSpeed: 500
   finalRotationSpeed: 0
-  jumpSpeed: 5
   groundCheckRadius: 0.2
   groundCheckOffset: {x: 0, y: 0.1, z: 0.04}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  isRun: 0
+  jumpHeight: 1
 --- !u!4 &1421306224
 Transform:
   m_ObjectHideFlags: 0

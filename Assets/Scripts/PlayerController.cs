@@ -7,10 +7,14 @@ public class PlayerController : MonoBehaviour
     [Header("Speed Settings")]
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] float runSpeed = 7f;
+    [SerializeField] float finalSpeed;
+    [SerializeField] float currentSpeed;
+
+    [Header("Rotation Settings")]
     [SerializeField] float rotationSpeed = 500f;
     [SerializeField] float runRotationSpeed = 500f;
     [SerializeField] float finalRotationSpeed;
-    [SerializeField] float jumpSpeed = 5f;
+    //[SerializeField] float jumpSpeed = 5f;
 
     [Header("Ground Check Settings")]
     [SerializeField] float groundCheckRadius = 0.2f;
@@ -21,14 +25,19 @@ public class PlayerController : MonoBehaviour
 
     float ySpeed;
 
+    [Header("Jump Settings")]
+    [SerializeField] float jumpHeight = 1f;
+
     Quaternion targetRotation;
 
     CameraController cameraController;
     Animator animator;
     CharacterController characterController;
 
-    [SerializeField] bool isRun = false;
-    float finalSpeed;
+    bool isRun = false;
+    bool isJumping = false;
+    bool isFalling = false;
+    bool isLanding = false;
 
     void Awake()
     {
@@ -61,12 +70,19 @@ public class PlayerController : MonoBehaviour
         // Gravity
         if(isGrounded) {
             ySpeed = -0.5f;
+
+            // Jump
+            if(Input.GetKey(KeyCode.Space)) {
+                ySpeed = ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+            }
+
+            currentSpeed = finalSpeed;
         } else {
             ySpeed += Physics.gravity.y * Time.deltaTime;
-        }
 
-        // Jump
-        Jump();
+            // If Jumping or Falling, Speed is fixed
+            finalSpeed = currentSpeed;
+        }
 
         var velocity = moveDir * finalSpeed;
         velocity.y = ySpeed;
@@ -103,17 +119,6 @@ public class PlayerController : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
-    }
-
-    // Jump
-    private void Jump()
-    {
-        if(isGrounded)
-        {
-            if(Input.GetKey(KeyCode.Space)) {
-                ySpeed = jumpSpeed;
-            }
-        }
     }
 
     private void OnDrawGizmosSelected()
