@@ -70,13 +70,19 @@ public class PlayerController : MonoBehaviour
         // Gravity
         if(isGrounded) {
             ySpeed = -0.5f;
+            currentSpeed = finalSpeed;
+            isJumping = false;
 
             // Jump
             if(Input.GetKey(KeyCode.Space)) {
-                ySpeed = ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+                //isJumping = true;
+                //animator.SetBool("isJumping", isJumping);
+                animator.SetTrigger("Jump");
             }
 
-            currentSpeed = finalSpeed;
+            //isJumping = false;
+            animator.SetBool("isJumping", isJumping);
         } else {
             ySpeed += Physics.gravity.y * Time.deltaTime;
 
