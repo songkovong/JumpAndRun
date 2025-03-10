@@ -35,9 +35,9 @@ public class PlayerController : MonoBehaviour
     CharacterController characterController;
 
     bool isRun = false;
-    bool isJumping = false;
     bool isFalling = false;
-    bool isLanding = false;
+
+
 
     void Awake()
     {
@@ -66,29 +66,28 @@ public class PlayerController : MonoBehaviour
         // Is Grounded?
         GroundCheck();
         Debug.Log("IsGrounded = " + isGrounded);
+        Debug.Log("IsFalling = " + isFalling);
 
         // Gravity
         if(isGrounded) {
             ySpeed = -0.5f;
             currentSpeed = finalSpeed;
-            isJumping = false;
 
-            // Jump
-            if(Input.GetKey(KeyCode.Space)) {
-                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
-                //isJumping = true;
-                //animator.SetBool("isJumping", isJumping);
-                animator.SetTrigger("Jump");
-            }
+            isFalling = false;
 
-            //isJumping = false;
-            animator.SetBool("isJumping", isJumping);
+            // If Player is Grounded, Play animator "Movement" Blend
+            animator.Play("Movement");
+
         } else {
             ySpeed += Physics.gravity.y * Time.deltaTime;
+
+            isFalling = true;
 
             // If Jumping or Falling, Speed is fixed
             finalSpeed = currentSpeed;
         }
+
+        Jump();
 
         var velocity = moveDir * finalSpeed;
         velocity.y = ySpeed;
@@ -109,6 +108,7 @@ public class PlayerController : MonoBehaviour
         // If player run, character run animation will be play
         float percent = (isRun ? 1f : 0.5f) * moveAmount;
         animator.SetFloat("moveAmount", percent, 0.2f, Time.deltaTime);
+        animator.SetBool("isFalling", isFalling);
     }
 
     private bool IsRun()
@@ -125,6 +125,14 @@ public class PlayerController : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+    }
+
+    // Jump
+    private void Jump()
+    {
+        if(Input.GetKey(KeyCode.Space) && isGrounded) {
+            ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+        }
     }
 
     private void OnDrawGizmosSelected()
