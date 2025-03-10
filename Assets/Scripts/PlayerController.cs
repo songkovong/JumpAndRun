@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     bool isRun = false;
     bool isFalling = false;
+    bool isJumping = false;
 
 
 
@@ -74,12 +75,14 @@ public class PlayerController : MonoBehaviour
             currentSpeed = finalSpeed;
 
             isFalling = false;
+            isJumping = false;
 
             // If Player is Grounded, Play animator "Movement" Blend
-            animator.Play("Movement");
+            //animator.Play("Movement");
 
         } else {
-            ySpeed += Physics.gravity.y * Time.deltaTime;
+            //ySpeed += Physics.gravity.y * Time.deltaTime;
+            ySpeed += -15f * Time.deltaTime;
 
             isFalling = true;
 
@@ -125,6 +128,7 @@ public class PlayerController : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+        //animator.SetBool("isGround", isGrounded);
     }
 
     // Jump
@@ -132,6 +136,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space) && isGrounded) {
             ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+            isJumping = true;
         }
     }
 
