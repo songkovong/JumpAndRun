@@ -271,7 +271,7 @@ MonoBehaviour:
   runRotationSpeed: 500
   finalRotationSpeed: 0
   groundCheckRadius: 0.2
-  groundCheckOffset: {x: 0, y: 0.1, z: 0.04}
+  groundCheckOffset: {x: 0, y: 0.2, z: 0.04}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

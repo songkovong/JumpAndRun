@@ -48,10 +48,6 @@ public class PlayerController : MonoBehaviour
 
     bool isMove = false;
     bool isRun = false;
-    //bool isFalling = false;
-    //bool isJumping = false;
-    bool canJump = true;
-    float jumpCooldown = 0.5f;
     
     void Awake()
     {
@@ -66,14 +62,8 @@ public class PlayerController : MonoBehaviour
         // Is Player Run?
         IsRun();
 
-        // Move amount clamp 0 to 1
-        //float moveAmount = Mathf.Clamp01(Mathf.Abs(h) + Mathf.Abs(v));
-
         // Is Grounded?
         GroundCheck();
-        Debug.Log("IsGrounded = " + isGrounded);
-        //Debug.Log("IsFalling = " + isFalling);
-        Debug.Log("currentState = " + currentState);
 
         // Gravity
         if(isGrounded) {
@@ -81,36 +71,23 @@ public class PlayerController : MonoBehaviour
 
             if(currentState == PLAYER_JUMP)
             {
-                /*if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && animator.IsInTransition(0))
+                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1) // When animation is End
                 {
                     ChangeAnimState(PLAYER_MOVEMENT);
-                }*/
-                ChangeAnimState(PLAYER_MOVEMENT);
+                }
             }
 
             if(currentState == PLAYER_MOVEMENT)
             {
-                if(Input.GetKey(KeyCode.Space) && canJump)
+                if(Input.GetKey(KeyCode.Space))
                 {
                     ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
-                    //StartCoroutine(JumpCooldown());
                     ChangeAnimState(PLAYER_JUMP);
                 }
             }
 
-            //isFalling = false;
-            //isJumping = false;
-
-            // If Player is Grounded, Play animator "Movement" Blend
-            //animator.Play("Movement");
-
         } else {
-            //ySpeed += Physics.gravity.y * Time.deltaTime;
             ySpeed += Physics.gravity.y * Time.deltaTime;
-
-            //isFalling = true;
-
-            // If Jumping or Falling, Speed is fixed
         }
 
         if(currentState == PLAYER_MOVEMENT || currentState == PLAYER_JUMP) {
@@ -160,8 +137,8 @@ public class PlayerController : MonoBehaviour
         float percent = (isRun ? 1f : 0.5f) * moveDir.normalized.magnitude;
         animator.SetFloat("moveAmount", percent, 0.2f, Time.deltaTime);
         //animator.SetBool("isFalling", isFalling);
-        float jumpPer = isMove ? 1f : 0f;
-        animator.SetFloat("Jump", jumpPer, 0f, Time.deltaTime);
+        float jumpPer = (isMove ? 1f : 0f) * moveDir.normalized.magnitude;
+        animator.SetFloat("Jump", percent, 0f, Time.deltaTime);
     }
 
     private bool IsRun()
@@ -178,7 +155,6 @@ public class PlayerController : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
-        //animator.SetBool("isGround", isGrounded);
     }
 
     // Jump
@@ -186,7 +162,6 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space) && isGrounded) {
             ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
-            //isJumping = true;
         }
     }
 
@@ -196,13 +171,6 @@ public class PlayerController : MonoBehaviour
 
         animator.Play(newState);
         currentState = newState;
-    }
-
-    IEnumerator JumpCooldown()
-    {
-        canJump = false;
-        yield return new WaitForSeconds(jumpCooldown);
-        canJump = true;
     }
 
     private void OnDrawGizmosSelected()

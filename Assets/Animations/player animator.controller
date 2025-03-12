@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Jump
-  m_Speed: 1
+  m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -82,7 +82,7 @@ BlendTree:
     m_DirectBlendParameter: moveAmount
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 0bd18f3cd6debdb40aa641876ac775d7, type: 3}
+    m_Motion: {fileID: 7400000, guid: d3ebc988196054c4fb1499901544c3d6, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -141,17 +141,17 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 9015376493910927440}
-    m_Position: {x: 310, y: 280, z: 0}
+    m_Position: {x: 290, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7657251610512275539}
-    m_Position: {x: 220, y: 420, z: 0}
+    m_Position: {x: 80, y: 430, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -70, y: 420, z: 0}
-  m_EntryPosition: {x: 50, y: 290, z: 0}
+  m_AnyStatePosition: {x: -130, y: 440, z: 0}
+  m_EntryPosition: {x: 50, y: 280, z: 0}
   m_ExitPosition: {x: 100, y: 620, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 9015376493910927440}
