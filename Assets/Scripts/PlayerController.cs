@@ -1,9 +1,13 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    const string PLAYER_MOVEMENT = "Movement";
+    const string PLAYER_JUMP = "Jump";
+
     [Header("Speed Settings")]
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] float runSpeed = 7f;
@@ -28,80 +32,124 @@ public class PlayerController : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] float jumpHeight = 1f;
 
+    [Header("State")]
+    [SerializeField] string currentState;
+
+    Vector3 moveInput;
+    Vector3 moveDir;
+    Vector3 velocity;
+
+
     Quaternion targetRotation;
 
     CameraController cameraController;
     Animator animator;
     CharacterController characterController;
 
+    bool isMove = false;
     bool isRun = false;
-    bool isFalling = false;
-    bool isJumping = false;
-
-
-
+    //bool isFalling = false;
+    //bool isJumping = false;
+    bool canJump = true;
+    float jumpCooldown = 0.5f;
+    
     void Awake()
     {
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+        currentState = PLAYER_MOVEMENT;
     }
 
     private void Update()
     {
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
         // Is Player Run?
         IsRun();
 
         // Move amount clamp 0 to 1
-        float moveAmount = Mathf.Clamp01(Mathf.Abs(h) + Mathf.Abs(v));
-
-        // If player run, speed will be change
-        finalSpeed = isRun ? runSpeed : moveSpeed;
-
-        // Calculate move vector and direction
-        var moveInput = (new Vector3(h, 0, v)).normalized;
-        var moveDir = cameraController.PlanerRotaion * moveInput;
+        //float moveAmount = Mathf.Clamp01(Mathf.Abs(h) + Mathf.Abs(v));
 
         // Is Grounded?
         GroundCheck();
         Debug.Log("IsGrounded = " + isGrounded);
-        Debug.Log("IsFalling = " + isFalling);
+        //Debug.Log("IsFalling = " + isFalling);
+        Debug.Log("currentState = " + currentState);
 
         // Gravity
         if(isGrounded) {
             ySpeed = -0.5f;
-            currentSpeed = finalSpeed;
 
-            isFalling = false;
-            isJumping = false;
+            if(currentState == PLAYER_JUMP)
+            {
+                /*if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && animator.IsInTransition(0))
+                {
+                    ChangeAnimState(PLAYER_MOVEMENT);
+                }*/
+                ChangeAnimState(PLAYER_MOVEMENT);
+            }
+
+            if(currentState == PLAYER_MOVEMENT)
+            {
+                if(Input.GetKey(KeyCode.Space) && canJump)
+                {
+                    ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+                    //StartCoroutine(JumpCooldown());
+                    ChangeAnimState(PLAYER_JUMP);
+                }
+            }
+
+            //isFalling = false;
+            //isJumping = false;
 
             // If Player is Grounded, Play animator "Movement" Blend
             //animator.Play("Movement");
 
         } else {
             //ySpeed += Physics.gravity.y * Time.deltaTime;
-            ySpeed += -15f * Time.deltaTime;
+            ySpeed += Physics.gravity.y * Time.deltaTime;
 
-            isFalling = true;
+            //isFalling = true;
 
             // If Jumping or Falling, Speed is fixed
-            finalSpeed = currentSpeed;
         }
 
-        Jump();
+        if(currentState == PLAYER_MOVEMENT || currentState == PLAYER_JUMP) {
+            Move();
+        }
 
-        var velocity = moveDir * finalSpeed;
+        velocity = moveDir * finalSpeed;
         velocity.y = ySpeed;
 
         // Player Move
         characterController.Move(velocity * Time.deltaTime);
+    }
+
+    private void Move()
+    {
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        // If player run, speed will be change
+        finalSpeed = isRun ? runSpeed : moveSpeed;
+
+        // Calculate move vector and direction
+        moveInput = (new Vector3(h, 0, v)).normalized;
+        moveDir = cameraController.PlanerRotaion * moveInput;
+
+        if(currentState == PLAYER_MOVEMENT) {
+            currentSpeed = finalSpeed;
+        } 
+        else if(currentState == PLAYER_JUMP) {
+            finalSpeed = currentSpeed;
+        }
 
         // If player get input value, player character rotate
-        if(moveAmount > 0)
+        if(moveDir.sqrMagnitude > 0.01f)
         {
             targetRotation = Quaternion.LookRotation(moveDir);
+            isMove = true;
+        } else {
+            isMove = false;
         }
         // Player character rotate smoothly
         finalRotationSpeed = isRun ? runRotationSpeed : rotationSpeed;
@@ -109,9 +157,11 @@ public class PlayerController : MonoBehaviour
             finalRotationSpeed * Time.deltaTime);
 
         // If player run, character run animation will be play
-        float percent = (isRun ? 1f : 0.5f) * moveAmount;
+        float percent = (isRun ? 1f : 0.5f) * moveDir.normalized.magnitude;
         animator.SetFloat("moveAmount", percent, 0.2f, Time.deltaTime);
-        animator.SetBool("isFalling", isFalling);
+        //animator.SetBool("isFalling", isFalling);
+        float jumpPer = isMove ? 1f : 0f;
+        animator.SetFloat("Jump", jumpPer, 0f, Time.deltaTime);
     }
 
     private bool IsRun()
@@ -136,8 +186,23 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space) && isGrounded) {
             ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
-            isJumping = true;
+            //isJumping = true;
         }
+    }
+
+    private void ChangeAnimState(string newState)
+    {
+        if (currentState == newState) return;
+
+        animator.Play(newState);
+        currentState = newState;
+    }
+
+    IEnumerator JumpCooldown()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(jumpCooldown);
+        canJump = true;
     }
 
     private void OnDrawGizmosSelected()

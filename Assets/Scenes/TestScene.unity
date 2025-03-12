@@ -276,6 +276,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpHeight: 1
+  currentState: 
 --- !u!4 &1421306224
 Transform:
   m_ObjectHideFlags: 0
