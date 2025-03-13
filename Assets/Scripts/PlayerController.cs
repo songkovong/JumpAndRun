@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Speed Settings")]
-    [SerializeField] float moveSpeed = 3f;
-    [SerializeField] float runSpeed = 7f;
+    [SerializeField] float moveSpeed = 1.5f;
+    [SerializeField] float runSpeed = 5f;
     [SerializeField] float finalSpeed;
 
     [Header("Rotation Settings")]
@@ -16,13 +16,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float finalRotationSpeed;
 
     [Header("Ground Check Settings")]
-    [SerializeField] float groundCheckRadius = 0.15f;
-    [SerializeField] Vector3 groundCheckOffset;
+    [SerializeField] float groundCheckRadius = 0.2f;
+    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0.04f);
     [SerializeField] LayerMask groundLayer;
 
     bool isGrounded;
 
     float ySpeed;
+    [SerializeField] float groundGravity = -5f; // -0.5f
 
     [Header("Jump Settings")]
     [SerializeField] float jumpHeight = 1f;
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         // Gravity
         if(isGrounded) {
-            ySpeed = -0.5f;
+            ySpeed = groundGravity;
 
             fallTimeoutDelta = fallTimeout;
 
@@ -100,6 +101,7 @@ public class PlayerController : MonoBehaviour
             }
 
             ySpeed += Physics.gravity.y * Time.deltaTime;
+            //ySpeed += -15f * Time.deltaTime;
         }
 
         Move();

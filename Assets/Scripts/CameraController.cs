@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] Transform followTarget;
     [SerializeField] float distance = 3f;
-    [SerializeField] float sensitivity = 200f;
+    [SerializeField] float sensitivity = 1f;
     [SerializeField] float verticalSensitivityScale = 0.5f;
     [SerializeField] float minVerticalAngle = -20f;
     [SerializeField] float maxVerticalAngle = 45f;
@@ -38,8 +38,13 @@ public class CameraController : MonoBehaviour
         distance = Mathf.Clamp(distance, 1f, 5f);
         rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
 
-        rotationX += Input.GetAxis("Mouse Y") * invertXVal * sensitivity * verticalSensitivityScale * Time.deltaTime;
-        rotationY += Input.GetAxis("Mouse X") * invertYVal * sensitivity * Time.deltaTime;
+        sensitivity = Mathf.Clamp(sensitivity, 0.01f, 1f);
+
+        //rotationX += Input.GetAxis("Mouse Y") * invertXVal * sensitivity * verticalSensitivityScale * Time.deltaTime;
+        //rotationY += Input.GetAxis("Mouse X") * invertYVal * sensitivity * Time.deltaTime;
+
+        rotationX += Input.GetAxis("Mouse Y") * invertXVal * sensitivity * verticalSensitivityScale;
+        rotationY += Input.GetAxis("Mouse X") * invertYVal * sensitivity;
 
         var targetRotation = Quaternion.Euler(rotationX, rotationY, 0);
         var focusPosition = followTarget.position + new Vector3(framingOffset.x, framingOffset.y);
