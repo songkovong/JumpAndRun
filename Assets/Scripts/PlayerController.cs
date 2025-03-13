@@ -5,23 +5,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    const string PLAYER_MOVEMENT = "Movement";
-    const string PLAYER_JUMP = "Jump";
-
     [Header("Speed Settings")]
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] float runSpeed = 7f;
     [SerializeField] float finalSpeed;
-    [SerializeField] float currentSpeed;
 
     [Header("Rotation Settings")]
     [SerializeField] float rotationSpeed = 500f;
     [SerializeField] float runRotationSpeed = 500f;
     [SerializeField] float finalRotationSpeed;
-    //[SerializeField] float jumpSpeed = 5f;
 
     [Header("Ground Check Settings")]
-    [SerializeField] float groundCheckRadius = 0.2f;
+    [SerializeField] float groundCheckRadius = 0.15f;
     [SerializeField] Vector3 groundCheckOffset;
     [SerializeField] LayerMask groundLayer;
 
@@ -32,13 +27,17 @@ public class PlayerController : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] float jumpHeight = 1f;
 
-    [Header("State")]
-    [SerializeField] string currentState;
+    [Header("Jump Timeout")]
+    [SerializeField] float jumpTimeout = 0.5f;
+    float jumpTimeoutDelta;
+
+    [Header("Fall Timeout")]
+    [SerializeField] float fallTimeout = 0.15f;
+    float fallTimeoutDelta;
 
     Vector3 moveInput;
     Vector3 moveDir;
     Vector3 velocity;
-
 
     Quaternion targetRotation;
 
@@ -46,7 +45,6 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     CharacterController characterController;
 
-    bool isMove = false;
     bool isRun = false;
     
     void Awake()
@@ -54,7 +52,12 @@ public class PlayerController : MonoBehaviour
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        currentState = PLAYER_MOVEMENT;
+    }
+
+    void Start()
+    {
+        jumpTimeoutDelta = jumpTimeout;
+        fallTimeoutDelta = fallTimeout;
     }
 
     private void Update()
@@ -69,30 +72,37 @@ public class PlayerController : MonoBehaviour
         if(isGrounded) {
             ySpeed = -0.5f;
 
-            if(currentState == PLAYER_JUMP)
-            {
-                if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1) // When animation is End
-                {
-                    ChangeAnimState(PLAYER_MOVEMENT);
-                }
+            fallTimeoutDelta = fallTimeout;
+
+            animator.SetBool("Jump", false);
+            animator.SetBool("FreeFall", false);
+
+            // Jump
+            if(Input.GetKey(KeyCode.Space) && jumpTimeoutDelta <= 0f) {
+                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+                animator.SetBool("Jump", true);
             }
 
-            if(currentState == PLAYER_MOVEMENT)
+            // Jump timeout
+            if (jumpTimeoutDelta >= 0.0f)
             {
-                if(Input.GetKey(KeyCode.Space))
-                {
-                    ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
-                    ChangeAnimState(PLAYER_JUMP);
-                }
+                jumpTimeoutDelta -= Time.deltaTime;
             }
 
         } else {
+            jumpTimeoutDelta = jumpTimeout;
+
+            // Fall timeout
+            if (fallTimeoutDelta >= 0.0f) {
+                fallTimeoutDelta -= Time.deltaTime;
+            } else {
+                animator.SetBool("FreeFall", true);
+            }
+
             ySpeed += Physics.gravity.y * Time.deltaTime;
         }
 
-        if(currentState == PLAYER_MOVEMENT || currentState == PLAYER_JUMP) {
-            Move();
-        }
+        Move();
 
         velocity = moveDir * finalSpeed;
         velocity.y = ySpeed;
@@ -113,21 +123,11 @@ public class PlayerController : MonoBehaviour
         moveInput = (new Vector3(h, 0, v)).normalized;
         moveDir = cameraController.PlanerRotaion * moveInput;
 
-        if(currentState == PLAYER_MOVEMENT) {
-            currentSpeed = finalSpeed;
-        } 
-        else if(currentState == PLAYER_JUMP) {
-            finalSpeed = currentSpeed;
+        // If player get input value, player character rotate
+        if(moveDir.sqrMagnitude > 0.01f) {
+            targetRotation = Quaternion.LookRotation(moveDir);
         }
 
-        // If player get input value, player character rotate
-        if(moveDir.sqrMagnitude > 0.01f)
-        {
-            targetRotation = Quaternion.LookRotation(moveDir);
-            isMove = true;
-        } else {
-            isMove = false;
-        }
         // Player character rotate smoothly
         finalRotationSpeed = isRun ? runRotationSpeed : rotationSpeed;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 
@@ -136,9 +136,6 @@ public class PlayerController : MonoBehaviour
         // If player run, character run animation will be play
         float percent = (isRun ? 1f : 0.5f) * moveDir.normalized.magnitude;
         animator.SetFloat("moveAmount", percent, 0.2f, Time.deltaTime);
-        //animator.SetBool("isFalling", isFalling);
-        float jumpPer = (isMove ? 1f : 0f) * moveDir.normalized.magnitude;
-        animator.SetFloat("Jump", percent, 0f, Time.deltaTime);
     }
 
     private bool IsRun()
@@ -155,22 +152,7 @@ public class PlayerController : MonoBehaviour
     private void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
-    }
-
-    // Jump
-    private void Jump()
-    {
-        if(Input.GetKey(KeyCode.Space) && isGrounded) {
-            ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
-        }
-    }
-
-    private void ChangeAnimState(string newState)
-    {
-        if (currentState == newState) return;
-
-        animator.Play(newState);
-        currentState = newState;
+        animator.SetBool("Grounded", isGrounded);
     }
 
     private void OnDrawGizmosSelected()
