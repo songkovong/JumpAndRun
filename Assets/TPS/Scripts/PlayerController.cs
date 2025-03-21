@@ -49,6 +49,11 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     CharacterController characterController;
 
+    [Header("Check Point")]
+    [SerializeField] float checkX;
+    [SerializeField] float checkY;
+    [SerializeField] float checkZ;
+
     bool isRun = false;
     
     void Awake()
@@ -62,10 +67,18 @@ public class PlayerController : MonoBehaviour
     {
         jumpTimeoutDelta = jumpTimeout;
         fallTimeoutDelta = fallTimeout;
+
+        LoadCheckPoint();
     }
 
     private void Update()
     {
+        // check
+        CheckPoint();
+
+        // delete savefile
+        DeleteSave();
+
         // Is Player Run?
         IsRun();
 
@@ -178,12 +191,80 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        private void OnLand(AnimationEvent animationEvent)
+    private void OnLand(AnimationEvent animationEvent)
+    {
+        // If over 0.5f, Land clip doesn't play land sound
+        //if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
-            // If over 0.5f, Land clip doesn't play land sound
-            //if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(characterController.center), FootstepAudioVolume);
-            }
+            AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(characterController.center), FootstepAudioVolume);
         }
+    }
+
+    void CheckPoint()
+    {
+        if(Input.GetKey(KeyCode.R))
+        {
+            characterController.enabled = false;
+            transform.position = new Vector3(checkX, checkY, checkZ);
+            //transform.eulerAngles = new Vector3(checkX, checkY, checkZ);
+            characterController.enabled = true;
+        }
+    }
+
+    void LoadCheckPoint()
+    {
+        checkX = PlayerPrefs.GetFloat("Check X", 0f);
+        checkY = PlayerPrefs.GetFloat("Check Y", 0f);
+        checkZ = PlayerPrefs.GetFloat("Check Z", 0f);
+
+        characterController.enabled = false;
+        transform.position = new Vector3(checkX, checkY, checkZ);
+        //transform.eulerAngles = new Vector3(checkX, checkY, checkZ);
+        characterController.enabled = true;
+    }
+
+    void DeleteSave()
+    {
+        if(Input.GetKey(KeyCode.P))
+        {
+            PlayerPrefs.DeleteAll();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.name == "Reset Box")
+        {
+            characterController.enabled = false;
+            transform.position = new Vector3(checkX, checkY, checkZ);
+            //transform.eulerAngles = new Vector3(checkX, checkY, checkZ);
+            characterController.enabled = true;
+        }
+
+        if(other.gameObject.tag == "CheckPoint")
+        {
+            checkX = other.transform.position.x;
+            checkY = other.transform.position.y;
+            checkZ = other.transform.position.z;
+            PlayerPrefs.SetFloat("Check X", checkX);
+            PlayerPrefs.SetFloat("Check Y", checkY);
+            PlayerPrefs.SetFloat("Check Z", checkZ);
+            PlayerPrefs.Save();
+        }
+    }
+
+    // When Character Controller Collider Hit
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.tag == "CheckPoint")
+        {
+            checkX = hit.transform.position.x;
+            checkY = hit.transform.position.y;
+            checkZ = hit.transform.position.z;
+            PlayerPrefs.SetFloat("Check X", checkX);
+            PlayerPrefs.SetFloat("Check Y", checkY);
+            PlayerPrefs.SetFloat("Check Z", checkZ);
+            PlayerPrefs.Save();
+        }
+    }
 }
