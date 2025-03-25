@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
         fallTimeoutDelta = fallTimeout;
 
         LoadCheckPoint();
+        isGrounded = true;
     }
 
     private void Update()
@@ -233,7 +234,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Reset Box")
+        if(other.gameObject.tag == "Reset")
         {
             characterController.enabled = false;
             transform.position = new Vector3(checkX, checkY, checkZ);
@@ -250,13 +251,14 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("Check Y", checkY);
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
+            other.gameObject.SetActive(false);
         }
     }
 
     // When Character Controller Collider Hit
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(hit.gameObject.tag == "CheckPoint")
+        /*if(hit.gameObject.tag == "CheckPoint")
         {
             checkX = hit.transform.position.x;
             checkY = hit.transform.position.y;
@@ -265,6 +267,15 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("Check Y", checkY);
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
+        }*/
+
+        if(hit.gameObject.tag == "Moving")
+        {
+            var hitX = hit.transform.position.x;
+            var hitY = hit.transform.position.y;
+            var hitZ = hit.transform.position.z;
+
+            Debug.Log("X = " + hitX + "Y = " + hitY + "Z = " + hitZ);
         }
     }
 }
