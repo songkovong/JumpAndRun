@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float finalRotationSpeed;
 
     [Header("Ground Check Settings")]
-    [SerializeField] float groundCheckRadius = 0.2f;
-    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0.04f);
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float groundCheckRadius = 0.2f; // default = 0.2f
+    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0.04f); // default = (0, 0.15, 0.08)
+    [SerializeField] LayerMask groundLayer; // default = Obstacles
 
     bool isGrounded;
 
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float checkZ;
 
     bool isRun = false;
-    
+
     void Awake()
     {
         cameraController = Camera.main.GetComponent<CameraController>();

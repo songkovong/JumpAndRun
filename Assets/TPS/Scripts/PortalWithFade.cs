@@ -9,7 +9,7 @@ public class PortalWithFade : MonoBehaviour
     public MonoBehaviour playerController; // 플레이어의 컨트롤 스크립트 (Inspector에서 할당)
     public Animator playerAnimator; // 플레이어의 애니메이터 (Inspector에서 연결)
 
-    private float fadeDuration = 2.0f; // 페이드 인/아웃 시간
+    [SerializeField] private float fadeDuration = 1.0f; // 페이드 인/아웃 시간
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,7 +30,8 @@ public class PortalWithFade : MonoBehaviour
         // 🔹 2. Idle 애니메이션 실행 (Idle 상태로 변경)
         if (playerAnimator != null)
         {
-            playerAnimator.SetFloat("moveAmount", 0f);
+            //playerAnimator.SetFloat("moveAmount", 0f);
+            playerAnimator.Play("Silly Dancing");
         }
 
         // 🔹 3. 페이드 인 (화면 어두워짐)
