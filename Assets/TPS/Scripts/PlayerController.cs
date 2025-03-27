@@ -49,6 +49,10 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     CharacterController characterController;
 
+
+    [Header("Pause")]
+    [SerializeField] Pause pause;
+
     [Header("Check Point")]
     [SerializeField] float checkX;
     [SerializeField] float checkY;
@@ -77,14 +81,14 @@ public class PlayerController : MonoBehaviour
         // check
         CheckPoint();
 
-        // delete savefile
-        DeleteSave();
-
         // Is Player Run?
         IsRun();
 
         // Is Grounded?
         GroundCheck();
+
+        // Pause
+        PauseGame();
 
         // Gravity
         if(isGrounded) {
@@ -224,11 +228,11 @@ public class PlayerController : MonoBehaviour
         characterController.enabled = true;
     }
 
-    void DeleteSave()
+    void PauseGame()
     {
-        if(Input.GetKey(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            PlayerPrefs.DeleteAll();
+            pause.CallMenu();
         }
     }
 

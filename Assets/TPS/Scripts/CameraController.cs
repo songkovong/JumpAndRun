@@ -27,13 +27,15 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
 
     private void Update()
     {
+        if(GameManager.isPause) return; // If pause, Dont rotate camera
+
         RaycastHit hit;
 
         invertXVal = invertX ? -1 : 1;
