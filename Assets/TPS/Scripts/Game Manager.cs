@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Dont destroy
     }
 
+    void Update()
+    {
+        
+    }
+
     public void DeleteSave()
     {
         PlayerPrefs.DeleteAll();

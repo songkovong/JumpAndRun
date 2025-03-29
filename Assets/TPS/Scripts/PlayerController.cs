@@ -248,9 +248,9 @@ public class PlayerController : MonoBehaviour
 
         if(other.gameObject.tag == "CheckPoint")
         {
-            checkX = other.transform.position.x;
-            checkY = other.transform.position.y;
-            checkZ = other.transform.position.z;
+            checkX = transform.position.x;
+            checkY = transform.position.y;
+            checkZ = transform.position.z;
             PlayerPrefs.SetFloat("Check X", checkX);
             PlayerPrefs.SetFloat("Check Y", checkY);
             PlayerPrefs.SetFloat("Check Z", checkZ);
