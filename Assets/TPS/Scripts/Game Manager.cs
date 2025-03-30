@@ -19,13 +19,15 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Dont destroy
     }
 
-    void Update()
+    void Start()
     {
-        
+        Application.targetFrameRate = 120;
     }
 
     public void DeleteSave()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey("Check X");
+        PlayerPrefs.DeleteKey("Check Y");
+        PlayerPrefs.DeleteKey("Check Z");
     }
 }

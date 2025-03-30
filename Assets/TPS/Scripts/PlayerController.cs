@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     float ySpeed;
     [SerializeField] float groundGravity = -5f; // -0.5f
+    [SerializeField] float fallGravity = -9.81f; // -9.81f
 
     [Header("Jump Settings")]
     [SerializeField] float jumpHeight = 1f;
@@ -74,10 +75,19 @@ public class PlayerController : MonoBehaviour
 
         LoadCheckPoint();
         isGrounded = true;
+
+        if (SoundOption.instance != null)
+        {
+            SoundOption.instance.FindSliders();
+        }
     }
 
     private void Update()
     {
+        if (SoundOption.instance != null) {
+            FootstepAudioVolume = SoundOption.instance.sfxVolume;
+        } else FootstepAudioVolume = 0.2f;
+
         // check
         CheckPoint();
 
@@ -101,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
             // Jump
             if(Input.GetKey(KeyCode.Space) && jumpTimeoutDelta <= 0f) {
-                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * Physics.gravity.y);
+                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
                 animator.SetBool("Jump", true);
             }
 
@@ -121,7 +131,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("FreeFall", true);
             }
 
-            ySpeed += Physics.gravity.y * Time.deltaTime;
+            ySpeed += fallGravity * Time.deltaTime;
             //ySpeed += -15f * Time.deltaTime;
         }
 

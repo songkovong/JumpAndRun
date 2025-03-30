@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CheckPoint
   - Reset
+  - BGMSlider
+  - SFXSlider
   layers:
   - Default
   - TransparentFX
