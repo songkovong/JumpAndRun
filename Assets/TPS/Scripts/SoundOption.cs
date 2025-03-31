@@ -46,6 +46,7 @@ public class SoundOption : MonoBehaviour
 
         if (BGMSlider != null)
         {
+            Debug.Log(BGMSlider);
             BGMSlider.value = audioSource.volume;
             BGMSlider.onValueChanged.AddListener(SetBGMVolume);
         }

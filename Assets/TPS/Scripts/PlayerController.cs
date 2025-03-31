@@ -265,7 +265,8 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("Check Y", checkY);
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false);
+            other.transform.parent.gameObject.SetActive(false);
         }
     }
 

@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float minVerticalAngle = -20f;
     [SerializeField] float maxVerticalAngle = 45f;
 
-    Vector2 framingOffset = new Vector2(0, 1);
+    Vector2 framingOffset;
 
     [SerializeField] bool invertX;
     [SerializeField] bool invertY;
@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour
     {
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
+        framingOffset = new Vector2(0, 1.3f);
     }
 
 
@@ -41,13 +42,14 @@ public class CameraController : MonoBehaviour
         invertYVal = invertY ? -1 : 1;
 
         verticalSensitivityScale = Mathf.Clamp(verticalSensitivityScale, 0.01f, 1f);
-        distance = Mathf.Clamp(distance, 1f, 3f);
+        distance = Mathf.Clamp(distance, 1f, 5f);
         rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
 
         sensitivity = Mathf.Clamp(sensitivity, 0.01f, 1f);
 
         rotationX += Input.GetAxis("Mouse Y") * invertXVal * sensitivity * verticalSensitivityScale;
         rotationY += Input.GetAxis("Mouse X") * invertYVal * sensitivity;
+        distance -= Input.GetAxis("Mouse ScrollWheel");
 
         var targetRotation = Quaternion.Euler(rotationX, rotationY, 0);
         var focusPosition = followTarget.position + new Vector3(framingOffset.x, framingOffset.y);
