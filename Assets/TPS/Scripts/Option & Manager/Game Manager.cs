@@ -3,16 +3,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    // instance를 static으로 선언해서 다른 오브젝트에서도 접근 가능
+    // Declare instance as Static can be accessed from other object
     public static GameManager instance;
 
+    // Pause setting
     public static bool isPause = false; // Pause Panel variable
 
+    // Sound setting
     public static float bgmVolume;
     public static float sfxVolume;
+
+    // Camera setting
+    public static float sensitivity;
+    public static float verticalSensitivityScale;
+
     
     void Awake()
     {
@@ -23,13 +31,12 @@ public class GameManager : MonoBehaviour
         }
         instance = this; // instance self
         DontDestroyOnLoad(gameObject); // Dont destroy
-    }
 
-    void Start()
-    {
         FrameRateControl();
         LoadVolumeSettings();
+        LoadSensSettings();
     }
+
 
     public void DeleteSave()
     {
@@ -43,18 +50,29 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 120;
     }
 
-    // PlayerPrefs에서 볼륨 값 불러오기
+    // Load volume in PlayerPrefs
     public void LoadVolumeSettings()
     {
         // PlayerPrefs에서 저장된 볼륨 값이 있는지 확인
-        if (PlayerPrefs.HasKey("BGMVolume"))
-        {
-            bgmVolume = PlayerPrefs.GetFloat("BGMVolume");  // 저장된 BGM 볼륨 불러오기
+        if (PlayerPrefs.HasKey("BGMVolume")) {
+            bgmVolume = PlayerPrefs.GetFloat("BGMVolume");
         } else bgmVolume = 0.15f;
 
-        if (PlayerPrefs.HasKey("SFXVolume"))
-        {
-            sfxVolume = PlayerPrefs.GetFloat("SFXVolume");  // 저장된 SFX 볼륨 불러오기
+        if (PlayerPrefs.HasKey("SFXVolume")) {
+            sfxVolume = PlayerPrefs.GetFloat("SFXVolume");
         } else sfxVolume = 0.25f;
+    }
+
+    // Load sensitivity in PlayerPrefs
+    public void LoadSensSettings()
+    {
+        // PlayerPrefs에서 저장된 볼륨 값이 있는지 확인
+        if (PlayerPrefs.HasKey("Sens")) {
+            sensitivity = PlayerPrefs.GetFloat("Sens");
+        } else sensitivity = 1f;
+
+        if (PlayerPrefs.HasKey("VerSens")) {
+            verticalSensitivityScale = PlayerPrefs.GetFloat("VerSens");
+        } else verticalSensitivityScale = 0.5f;
     }
 }

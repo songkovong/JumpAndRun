@@ -9,7 +9,7 @@ public class PortalWithFade : MonoBehaviour
     public MonoBehaviour playerController;
     public Animator playerAnimator;
 
-    [SerializeField] private float fadeDuration = 1.0f;
+    [SerializeField] private float fadeDuration = 1f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,14 +21,12 @@ public class PortalWithFade : MonoBehaviour
 
     private IEnumerator TeleportWithFade(Collider player)
     {
-        CharacterController controller = player.GetComponent<CharacterController>();
 
-        if (controller != null) controller.enabled = false;
         if (playerController != null) playerController.enabled = false;
 
         if (playerAnimator != null)
         {
-            playerAnimator.Play("Silly Dancing");
+            playerAnimator.CrossFade("Look Around", 0.1f);
         }
 
         for (float i = 0; i <= 1; i += Time.deltaTime / fadeDuration)
@@ -37,7 +35,7 @@ public class PortalWithFade : MonoBehaviour
             yield return null;
         }
 
-        player.transform.position = destination.position;
+        player.transform.position = destination.position - new Vector3(0, 1, 0);
 
         for (float i = 1; i >= 0; i -= Time.deltaTime / fadeDuration)
         {
@@ -45,7 +43,6 @@ public class PortalWithFade : MonoBehaviour
             yield return null;
         }
 
-        if (controller != null) controller.enabled = true;
         if (playerController != null) playerController.enabled = true;
     }
 }

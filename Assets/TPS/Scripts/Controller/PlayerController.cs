@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         PauseGame();
 
         // Gravity
-        if(isGrounded) {
+        /*if(isGrounded) {
             ySpeed = groundGravity;
 
             fallTimeoutDelta = fallTimeout;
@@ -105,9 +105,10 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("FreeFall", false);
 
             // Jump
-            if(Input.GetKey(KeyCode.Space) && jumpTimeoutDelta <= 0f) {
+            if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
                 ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
-                animator.SetBool("Jump", true);
+                //animator.SetBool("Jump", true);
+                animator.CrossFade("JumpStart", 0f);
             }
 
             // Jump timeout
@@ -128,15 +129,15 @@ public class PlayerController : MonoBehaviour
 
             ySpeed += fallGravity * Time.deltaTime;
             //ySpeed += -15f * Time.deltaTime;
-        }
+        }*/
+        GravityAndJump();
 
         // Player Move
         Move();
-
-        velocity = moveDir * finalSpeed;
+        /*velocity = moveDir * finalSpeed;
         velocity.y = ySpeed;
 
-        characterController.Move(velocity * Time.deltaTime);    
+        characterController.Move(velocity * Time.deltaTime);*/
 }
 
     private void Move()
@@ -164,6 +165,49 @@ public class PlayerController : MonoBehaviour
         // If player run, character run animation will be play
         float percent = (isRun ? 1f : 0.5f) * moveDir.normalized.magnitude;
         animator.SetFloat("moveAmount", percent, 0.2f, Time.deltaTime);
+
+        velocity = moveDir * finalSpeed;
+        velocity.y = ySpeed;
+
+        characterController.Move(velocity * Time.deltaTime);
+    }
+
+    void GravityAndJump()
+    {
+        if(isGrounded) {
+            ySpeed = groundGravity;
+
+            fallTimeoutDelta = fallTimeout;
+
+            animator.SetBool("Jump", false);
+            animator.SetBool("FreeFall", false);
+
+            // Jump
+            if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
+                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
+                //animator.SetBool("Jump", true);
+                animator.CrossFade("JumpStart", 0f);
+            }
+
+            // Jump timeout
+            if (jumpTimeoutDelta >= 0.0f)
+            {
+                jumpTimeoutDelta -= Time.deltaTime;
+            }
+
+        } else {
+            jumpTimeoutDelta = jumpTimeout;
+
+            // Fall timeout
+            if (fallTimeoutDelta >= 0.0f) {
+                fallTimeoutDelta -= Time.deltaTime;
+            } else {
+                animator.SetBool("FreeFall", true);
+            }
+
+            ySpeed += fallGravity * Time.deltaTime;
+            //ySpeed += -15f * Time.deltaTime;
+        }
     }
 
     private bool IsRun()
@@ -237,7 +281,9 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            pause.CallMenu();
+            if(!GameManager.isPause) {
+                pause.CallMenu();
+            } else pause.CloseMenu();
         }
     }
 
@@ -256,10 +302,12 @@ public class PlayerController : MonoBehaviour
             checkX = transform.position.x;
             checkY = transform.position.y;
             checkZ = transform.position.z;
+
             PlayerPrefs.SetFloat("Check X", checkX);
             PlayerPrefs.SetFloat("Check Y", checkY);
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
+
             //other.gameObject.SetActive(false);
             other.transform.parent.gameObject.SetActive(false);
             Debug.Log("dddd");
@@ -275,24 +323,6 @@ public class PlayerController : MonoBehaviour
     // When Character Controller Collider Hit
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        /*if(hit.gameObject.tag == "CheckPoint")
-        {
-            checkX = hit.transform.position.x;
-            checkY = hit.transform.position.y;
-            checkZ = hit.transform.position.z;
-            PlayerPrefs.SetFloat("Check X", checkX);
-            PlayerPrefs.SetFloat("Check Y", checkY);
-            PlayerPrefs.SetFloat("Check Z", checkZ);
-            PlayerPrefs.Save();
-        }*/
-
-        if(hit.gameObject.tag == "Moving")
-        {
-            var hitX = hit.transform.position.x;
-            var hitY = hit.transform.position.y;
-            var hitZ = hit.transform.position.z;
-
-            Debug.Log("X = " + hitX + "Y = " + hitY + "Z = " + hitZ);
-        }
+        
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SoundOption : MonoBehaviour
 {
-    public AudioSource audioSource;
+    public AudioSource audioSource; 
 
     // Slider
     public Slider BGMSlider;
@@ -17,11 +17,10 @@ public class SoundOption : MonoBehaviour
     {
         if (audioSource == null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>(); // AudioSource 자동 추가
+            audioSource = gameObject.AddComponent<AudioSource>(); // AudioSource Auto add
         }
 
-        audioSource.loop = true; // BGM 루프 재생 설정
-        audioSource.playOnAwake = false; // 자동 재생 방지
+        audioSource.loop = true; // Set BGM loop play
     }
 
     void Start()
@@ -32,6 +31,7 @@ public class SoundOption : MonoBehaviour
 
     public void FindSliders()
     {
+        // Find Slider
         BGMSlider = GameObject.FindWithTag("BGMSlider")?.GetComponent<Slider>();
         SFXSlider = GameObject.FindWithTag("SFXSlider")?.GetComponent<Slider>();
 
@@ -50,8 +50,6 @@ public class SoundOption : MonoBehaviour
             SFXSlider.value = sfxVolume;
             SFXSlider.onValueChanged.AddListener(SetSFXVolume);
         }
-
-
     }
 
     // Set volume
@@ -69,16 +67,16 @@ public class SoundOption : MonoBehaviour
         SaveVolumeSettings();
     }
 
-    // 볼륨 값을 PlayerPrefs에 저장
+    // Save volume in PlayerPrefs
     public void SaveVolumeSettings()
     {
-        PlayerPrefs.SetFloat("BGMVolume", audioSource.volume);  // BGM 볼륨 저장
-        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);  // SFX 볼륨 저장
-        PlayerPrefs.Save();  // 저장 적용
+        PlayerPrefs.SetFloat("BGMVolume", audioSource.volume);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+        PlayerPrefs.Save();
         Debug.Log("Sound Save");
     }
 
-    // PlayerPrefs에서 볼륨 값 불러오기
+    // Load volume in PlayerPrefs
     /*public void LoadVolumeSettings()
     {
         // PlayerPrefs에서 저장된 볼륨 값이 있는지 확인

@@ -6,18 +6,24 @@ using System.Collections;
 public class GraphicManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown dropdown;
-    [SerializeField] private RenderPipelineAsset[] qualityAssets; // 품질별 RenderPipelineAsset 배열
+    [SerializeField] private RenderPipelineAsset[] qualityAssets; // RenderPipelineAsset Array
 
     void Start()
     {
         dropdown.onValueChanged.AddListener(SetQualityLevelDropdown);
-        dropdown.value = QualitySettings.GetQualityLevel();
+        if(PlayerPrefs.HasKey("QLevel")) {
+            dropdown.value = PlayerPrefs.GetInt("QLevel");
+        } else dropdown.value = QualitySettings.GetQualityLevel();
     }
 
     public void SetQualityLevelDropdown(int index)
     {
         QualitySettings.SetQualityLevel(index, true);
-        QualitySettings.renderPipeline = qualityAssets[index]; // 직접 렌더 파이프라인 설정
+        QualitySettings.renderPipeline = qualityAssets[index]; // Set RenderPipeline
+        
+        PlayerPrefs.SetInt("QLevel", index);
+        PlayerPrefs.Save();
+
         Debug.Log($"Quality Level Changed: {index}");
     }
 }

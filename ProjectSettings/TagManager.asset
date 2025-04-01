@@ -9,6 +9,8 @@ TagManager:
   - BGMSlider
   - SFXSlider
   - Victory
+  - SensSlider
+  - VerticalSensSlider
   layers:
   - Default
   - TransparentFX

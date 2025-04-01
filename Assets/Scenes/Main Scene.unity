@@ -797,23 +797,51 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 566687148}
     m_Modifications:
-    - target: {fileID: 456885346076258357, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
-      propertyPath: m_Name
-      value: BGM Sound Slidersss
-      objectReference: {fileID: 0}
     - target: {fileID: 1121558785834373647, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
       propertyPath: m_Name
-      value: Option Panel 1
+      value: Option Panel
       objectReference: {fileID: 0}
     - target: {fileID: 1121558785834373647, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197814273892347411, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197814273892347411, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5197814273892347411, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389572957304855968, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389572957304855968, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5389572957304855968, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5595410052657731477, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5595410052657731477, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6373223777847740894, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6373223777847740894, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
@@ -896,6 +924,14 @@ PrefabInstance:
     - target: {fileID: 7694418500807570646, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719616218377486669, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719616218377486669, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7832801443297440314, guid: 023aa1fc2bb6db64687f5beaaeb6990e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1036,6 +1072,18 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1823496027}
         m_TargetAssemblyTypeName: SoundOption, Assembly-CSharp
+        m_MethodName: FindSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1925353442}
+        m_TargetAssemblyTypeName: MouseOption, Assembly-CSharp
         m_MethodName: FindSliders
         m_Mode: 1
         m_Arguments:
@@ -1807,8 +1855,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2060571459}
-        m_TargetAssemblyTypeName: LoadScene, Assembly-CSharp
+      - m_Target: {fileID: 1907647440}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: DeleteSave
         m_Mode: 1
         m_Arguments:
@@ -2495,6 +2543,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1855860297}
   m_CullTransparentMesh: 1
+--- !u!114 &1907647440 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3375395246817781403, guid: 695f0323afb607c4a8e62ad32a65c074, type: 3}
+  m_PrefabInstance: {fileID: 1796522600}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3663544733a734a449bcef093e3c43cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1925353442 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8982126130785091911, guid: f65a534a1d02d964eb28d4f4eddf57a4, type: 3}
+  m_PrefabInstance: {fileID: 3037720803342701670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa04006acea940478d969cec4b81c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2030237177
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,7 +2843,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2467067787180055970, guid: f65a534a1d02d964eb28d4f4eddf57a4, type: 3}
       propertyPath: m_Name
-      value: Audio Manager
+      value: Option Manager
       objectReference: {fileID: 0}
     - target: {fileID: 4060547846370506953, guid: f65a534a1d02d964eb28d4f4eddf57a4, type: 3}
       propertyPath: m_LocalPosition.x
