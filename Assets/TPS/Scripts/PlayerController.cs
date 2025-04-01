@@ -75,17 +75,12 @@ public class PlayerController : MonoBehaviour
 
         LoadCheckPoint();
         isGrounded = true;
-
-        if (SoundOption.instance != null)
-        {
-            SoundOption.instance.FindSliders();
-        }
     }
 
     private void Update()
     {
-        if (SoundOption.instance != null) {
-            FootstepAudioVolume = SoundOption.instance.sfxVolume;
+        if (GameManager.instance != null) {
+            FootstepAudioVolume = GameManager.sfxVolume;
         } else FootstepAudioVolume = 0.2f;
 
         // check
@@ -135,14 +130,14 @@ public class PlayerController : MonoBehaviour
             //ySpeed += -15f * Time.deltaTime;
         }
 
+        // Player Move
         Move();
 
         velocity = moveDir * finalSpeed;
         velocity.y = ySpeed;
 
-        // Player Move
-        characterController.Move(velocity * Time.deltaTime);
-    }
+        characterController.Move(velocity * Time.deltaTime);    
+}
 
     private void Move()
     {
@@ -267,6 +262,13 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.Save();
             //other.gameObject.SetActive(false);
             other.transform.parent.gameObject.SetActive(false);
+            Debug.Log("dddd");
+        }
+
+        if(other.gameObject.tag == "Victory")
+        {
+            Debug.Log("Victory");
+            // Scene Change
         }
     }
 

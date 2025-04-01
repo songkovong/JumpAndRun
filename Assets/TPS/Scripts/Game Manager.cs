@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public static bool isPause = false; // Pause Panel variable
+
+    public static float bgmVolume;
+    public static float sfxVolume;
     
     void Awake()
     {
@@ -24,7 +27,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Application.targetFrameRate = 120;
+        FrameRateControl();
+        LoadVolumeSettings();
     }
 
     public void DeleteSave()
@@ -32,5 +36,25 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey("Check X");
         PlayerPrefs.DeleteKey("Check Y");
         PlayerPrefs.DeleteKey("Check Z");
+    }
+
+    void FrameRateControl()
+    {
+        Application.targetFrameRate = 120;
+    }
+
+    // PlayerPrefs에서 볼륨 값 불러오기
+    public void LoadVolumeSettings()
+    {
+        // PlayerPrefs에서 저장된 볼륨 값이 있는지 확인
+        if (PlayerPrefs.HasKey("BGMVolume"))
+        {
+            bgmVolume = PlayerPrefs.GetFloat("BGMVolume");  // 저장된 BGM 볼륨 불러오기
+        } else bgmVolume = 0.15f;
+
+        if (PlayerPrefs.HasKey("SFXVolume"))
+        {
+            sfxVolume = PlayerPrefs.GetFloat("SFXVolume");  // 저장된 SFX 볼륨 불러오기
+        } else sfxVolume = 0.25f;
     }
 }

@@ -13,9 +13,4 @@ public class LoadScene : MonoBehaviour
         GameManager.isPause = false;
         SceneManager.LoadScene("Game Scene");
     }
-
-    public void DeleteSave()
-    {
-        PlayerPrefs.DeleteAll();
-    }
 }
