@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6247145725045645382}
   - component: {fileID: 7697587091117676525}
+  - component: {fileID: 4774069477614237173}
   - component: {fileID: 4992939452671329029}
   - component: {fileID: 951508712892502678}
   m_Layer: 0
   m_Name: IPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,22 +60,47 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2b97eef23d8819d4d89bf273cb39e804, type: 3}
   - {fileID: 8300000, guid: c22796a2efe02fe44943275460cdc4b7, type: 3}
   - {fileID: 8300000, guid: 0401945af695a6940b7901f9efccb832, type: 3}
-  FootstepAudioVolume: 0.308
+  FootstepAudioVolume: 1
   moveSpeed: 1.5
-  runSpeed: 5
+  runSpeed: 4.8
   finalSpeed: 0
   rotationSpeed: 500
   runRotationSpeed: 500
   finalRotationSpeed: 0
   groundCheckRadius: 0.2
-  groundCheckOffset: {x: 0, y: 0.1, z: 0.04}
+  groundCheckOffset: {x: 0, y: 0.17, z: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundGravity: -5
+  fallGravity: -9.81
   jumpHeight: 1
   jumpTimeout: 0.5
   fallTimeout: 0.15
+  pause: {fileID: 0}
+  checkX: 0
+  checkY: 0
+  checkZ: 0
+  checkPointTxt: {fileID: 0}
+--- !u!114 &4774069477614237173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236462417055648729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3365719abdca52f478bcf43a0dbf07fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move: {x: 0, y: 0}
+  look: {x: 0, y: 0}
+  jump: 0
+  sprint: 0
+  analogMovement: 0
+  cursorLocked: 1
+  cursorInputForLook: 1
 --- !u!95 &4992939452671329029
 Animator:
   serializedVersion: 7
@@ -117,11 +143,11 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.7
   m_Radius: 0.2
-  m_SlopeLimit: 45
+  m_SlopeLimit: 50
   m_StepOffset: 0.3
-  m_SkinWidth: 0.03
+  m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.87, z: 0.08}
+  m_Center: {x: 0, y: 0.87, z: 0}
 --- !u!1001 &6092013408020354718
 PrefabInstance:
   m_ObjectHideFlags: 0

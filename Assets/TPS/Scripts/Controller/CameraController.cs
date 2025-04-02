@@ -72,6 +72,7 @@ public class CameraController : MonoBehaviour
 }
 */
 
+using StarterAssets;
 using UnityEditor;
 using UnityEngine;
 
@@ -96,7 +97,7 @@ public class CameraController : MonoBehaviour
     private Vector3 currentPosition;
     private float rotationSmoothness = 200.0f;
     private float positionSmoothness = 200.0f;
-    
+
     private void Start()
     {
         framingOffset = new Vector2(0, 1.3f);
@@ -134,6 +135,8 @@ public class CameraController : MonoBehaviour
 
         rotationX += Input.GetAxis("Mouse Y") * invertXVal * sensitivity * verticalSensitivityScale;
         rotationY += Input.GetAxis("Mouse X") * invertYVal * sensitivity;
+        //rotationX += input.look.x * invertXVal * sensitivity * verticalSensitivityScale;
+        //rotationY += input.look.y * invertYVal * sensitivity;
         rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
         distance -= Input.GetAxis("Mouse ScrollWheel") * 2f;
 

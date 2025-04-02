@@ -1,7 +1,23 @@
 using System.Collections;
+using StarterAssets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+/*
+********************************************************************
+Character Controller Value
+
+    Slope limit: 45
+    Step Offset: 0.3
+    Skin width: 0.02
+    Min Move Distance: 0.001
+    Center: 0, 0.93, 0
+    Radius: 0.2
+    Height: 1.8
+
+********************************************************************
+*/
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Speed Settings")]
     [SerializeField] float moveSpeed = 1.5f;
-    [SerializeField] float runSpeed = 5f;
+    [SerializeField] float runSpeed = 4.8f;
     [SerializeField] float finalSpeed;
 
     [Header("Rotation Settings")]
@@ -20,9 +36,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float finalRotationSpeed;
 
     [Header("Ground Check Settings")]
-    [SerializeField] float groundCheckRadius = 0.2f; // default = 0.2f
-    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0.04f); // default = (0, 0.15, 0.08)
+    [SerializeField] float groundCheckRadius = 0.19f; // default = 0.2f
+    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0f); // default = (0, 0.15, 0.08) (0, 0.1f, 0.04f)
     [SerializeField] LayerMask groundLayer; // default = Obstacles
+
+    [Tooltip("Useful for rough ground")]
+    public float GroundedOffset = -0.18f; // -0.14f
+
+    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
+    public float GroundedRadius = 0.19f; // 0.28f
+
+    [Tooltip("What layers the character uses as ground")]
+    public LayerMask GroundLayers; // Obstacles
 
     bool isGrounded = false;
 
@@ -62,6 +87,11 @@ public class PlayerController : MonoBehaviour
 
     public TMP_Text checkPointTxt;
 
+
+    StarterAssetsInputs input;
+
+
+
     bool isRun = false;
     bool isChanged = false;
 
@@ -70,6 +100,7 @@ public class PlayerController : MonoBehaviour
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+        input = GetComponent<StarterAssetsInputs>();
     }
 
     void Start()
@@ -105,6 +136,7 @@ public class PlayerController : MonoBehaviour
 
         // Is Grounded?
         GroundCheck();
+        //GroundedCheck();
 
         // Pause
         PauseGame();
@@ -160,9 +192,12 @@ public class PlayerController : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
+        //float h = input.move.x;
+        //float v = input.move.y;
 
         // If player run, speed will be change
         finalSpeed = isRun ? runSpeed : moveSpeed;
+        //finalSpeed = input.sprint ? runSpeed : moveSpeed;
 
         // Calculate move vector and direction
         moveInput = (new Vector3(h, 0, v)).normalized;
@@ -200,9 +235,10 @@ public class PlayerController : MonoBehaviour
 
             // Jump
             if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
+            //if(input.jump && jumpTimeoutDelta <= 0f) {
                 ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
-                //animator.SetBool("Jump", true);
-                animator.CrossFade("JumpStart", 0f);
+                animator.SetBool("Jump", true);
+                //animator.CrossFade("JumpStart", 0f);
                 Debug.Log("Jump");
             }
 
@@ -222,6 +258,8 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("FreeFall", true);
             }
 
+            //input.jump = false;
+
             ySpeed += fallGravity * Time.deltaTime;
             //ySpeed += -15f * Time.deltaTime;
         }
@@ -230,6 +268,7 @@ public class PlayerController : MonoBehaviour
     private bool IsRun()
     {
         if(Input.GetKey(KeyCode.LeftShift)) {
+        //if(input.sprint) {
             isRun = true;
         } else {
             isRun = false;
@@ -243,6 +282,32 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
         animator.SetBool("Grounded", isGrounded);
     }
+
+    /*private void GroundedCheck()
+    {
+        // set sphere position, with offset
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+            transform.position.z);
+        isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+            QueryTriggerInteraction.Ignore);
+
+        // update animator if using character
+        animator.SetBool("Grounded", isGrounded);
+    }*/
+
+    /*private void OnDrawGizmosSelected()
+    {
+        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+
+        if (isGrounded) Gizmos.color = transparentGreen;
+        else Gizmos.color = transparentRed;
+
+        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+        Gizmos.DrawSphere(
+            new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
+            GroundedRadius);
+    }*/
 
     private void OnDrawGizmosSelected()
     {

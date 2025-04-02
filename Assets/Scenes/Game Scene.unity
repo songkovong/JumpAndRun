@@ -16669,33 +16669,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: IPlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 236462417055648729, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 236462417055648729, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_Height
-      value: 1.7
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_Center.y
-      value: 0.87
+      value: 0.93
       objectReference: {fileID: 0}
-    - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: m_Center.z
-      value: 0.08
+    - target: {fileID: 4774069477614237173, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: cursorLocked
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: m_SkinWidth
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: m_StepOffset
-      value: 0.3
+    - target: {fileID: 4774069477614237173, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: cursorInputForLook
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6247145725045645382, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16703,7 +16691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6247145725045645382, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.67
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6247145725045645382, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16738,85 +16726,36 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: pos
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: pause
       value: 
       objectReference: {fileID: 370920143}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: checkX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: checkY
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: checkZ
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: runSpeed
-      value: 4.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: boxSize.x
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: boxSize.y
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: boxSize.z
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: drawGizmo
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: savePoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: checkPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: resetPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: fallTimeout
-      value: 0.15
-      objectReference: {fileID: 0}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: checkPointTxt
       value: 
       objectReference: {fileID: 2140064498}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: itemAudioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 5eb0b707a5092cf46aca687d1b20fcb5, type: 3}
+      propertyPath: GroundedOffset
+      value: -0.18
+      objectReference: {fileID: 0}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: FootstepAudioVolume
-      value: 1
+      propertyPath: GroundedRadius
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: groundCheckOffset.y
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
-      propertyPath: groundCheckOffset.z
-      value: 0.08
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 236462417055648729, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1743037845}
   m_SourcePrefab: {fileID: 100100000, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
 --- !u!1 &607339795
 GameObject:
@@ -35848,6 +35787,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4602716832683212, guid: 486fe0f83b403324785cfabb3a2d5e69, type: 3}
   m_PrefabInstance: {fileID: 1244521608}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1281276293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 236462417055648729, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+  m_PrefabInstance: {fileID: 606272799}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1285455721
 GameObject:
   m_ObjectHideFlags: 0
@@ -49054,12 +48998,42 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
   m_PrefabInstance: {fileID: 606272799}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1281276293}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a02a5e4d0dc6ad54e87bec8922c4e57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1743037845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281276293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a363f57ee65dbd5499070efffeb4d2fb, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &1743269918
 PrefabInstance:
   m_ObjectHideFlags: 0
