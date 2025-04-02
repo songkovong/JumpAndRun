@@ -24,14 +24,17 @@ public class SceneTip : MonoBehaviour
     void Start()
     {
         StartCoroutine(ShowLoadingTips());
+        //LoadNextScene(); // 이 메서드는 동작하는거 보면 코루틴이 안되는 느낌이 난다.
     }
 
     IEnumerator ShowLoadingTips()
     {
+        Debug.Log("ShowLoadingTips");
         ShuffleTips(); // 팁을 랜덤하게 섞음
 
         for (int i = 0; i < 3; i++) // 3개의 팁을 순차적으로 표시
         {
+            Debug.Log("Tip Text");
             tipText.text = tips[i]; // 새로운 팁 표시
             yield return new WaitForSeconds(3f); // 3초 대기
         }
@@ -41,12 +44,14 @@ public class SceneTip : MonoBehaviour
 
     void LoadNextScene()
     {
+        Debug.Log("LoadNextScene");
         SceneManager.LoadScene(nextScene);
     }
 
     // 팁 리스트를 랜덤하게 섞는 함수
     void ShuffleTips()
     {
+        Debug.Log("ShuffleTips");
         for (int i = 0; i < tips.Count; i++)
         {
             int randomIndex = Random.Range(0, tips.Count);
