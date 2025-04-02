@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     // Camera setting
     public static float sensitivity;
     public static float verticalSensitivityScale;
+    public static float camDistance;
+
+    // TPS setting
+    public static bool isTPS;
 
     
     void Awake()
@@ -37,14 +41,6 @@ public class GameManager : MonoBehaviour
         LoadSensSettings();
     }
 
-
-    public void DeleteSave()
-    {
-        PlayerPrefs.DeleteKey("Check X");
-        PlayerPrefs.DeleteKey("Check Y");
-        PlayerPrefs.DeleteKey("Check Z");
-    }
-
     void FrameRateControl()
     {
         Application.targetFrameRate = 120;
@@ -56,7 +52,7 @@ public class GameManager : MonoBehaviour
         // PlayerPrefs에서 저장된 볼륨 값이 있는지 확인
         if (PlayerPrefs.HasKey("BGMVolume")) {
             bgmVolume = PlayerPrefs.GetFloat("BGMVolume");
-        } else bgmVolume = 0.15f;
+        } else bgmVolume = 0.075f;
 
         if (PlayerPrefs.HasKey("SFXVolume")) {
             sfxVolume = PlayerPrefs.GetFloat("SFXVolume");

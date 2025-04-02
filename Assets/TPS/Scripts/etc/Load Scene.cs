@@ -8,9 +8,20 @@ public class LoadScene : MonoBehaviour
         SceneManager.LoadScene("Main Scene");
     }
 
+    public void LoadingScene()
+    {
+        GameManager.isPause = false;
+        SceneManager.LoadScene("Loading Scene");
+    }
+
     public void GameScene()
     {
         GameManager.isPause = false;
         SceneManager.LoadScene("Game Scene");
+    }
+
+    public void GameExit()
+    {
+        Application.Quit();
     }
 }

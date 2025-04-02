@@ -78,7 +78,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] Transform followTarget;
-    [SerializeField] float distance = 3f;
+    [SerializeField] float distance = 4f;
     [SerializeField] float sensitivity;
     [SerializeField] float verticalSensitivityScale;
     [SerializeField] float minVerticalAngle = -20f;
@@ -123,13 +123,19 @@ public class CameraController : MonoBehaviour
         invertXVal = invertX ? -1 : 1;
         invertYVal = invertY ? -1 : 1;
         verticalSensitivityScale = Mathf.Clamp(verticalSensitivityScale, 0.01f, 1f);
-        distance = Mathf.Clamp(distance, 1f, 5f);
+        distance = Mathf.Clamp(distance, 0.1f, 8f);
         sensitivity = Mathf.Clamp(sensitivity, 0.01f, 2f);
+
+        if(distance <= .5f) {
+            GameManager.isTPS = false;
+        } else GameManager.isTPS = true;
+
+        GameManager.camDistance = distance;
 
         rotationX += Input.GetAxis("Mouse Y") * invertXVal * sensitivity * verticalSensitivityScale;
         rotationY += Input.GetAxis("Mouse X") * invertYVal * sensitivity;
         rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
-        distance -= Input.GetAxis("Mouse ScrollWheel");
+        distance -= Input.GetAxis("Mouse ScrollWheel") * 2f;
 
         // Calculate target rotation and position
         Quaternion targetRotation = Quaternion.Euler(rotationX, rotationY, 0);

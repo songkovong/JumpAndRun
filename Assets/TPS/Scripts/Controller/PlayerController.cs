@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public AudioClip LandingAudioClip;
     public AudioClip[] FootstepAudioClips;
-    [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
+    [Range(0, 1)] public float FootstepAudioVolume;
 
     [Header("Speed Settings")]
     [SerializeField] float moveSpeed = 1.5f;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0.04f); // default = (0, 0.15, 0.08)
     [SerializeField] LayerMask groundLayer; // default = Obstacles
 
-    bool isGrounded;
+    bool isGrounded = false;
 
     float ySpeed;
     [SerializeField] float groundGravity = -5f; // -0.5f
@@ -37,7 +38,7 @@ public class PlayerController : MonoBehaviour
     float jumpTimeoutDelta;
 
     [Header("Fall Timeout")]
-    [SerializeField] float fallTimeout = 0.15f;
+    [SerializeField] float fallTimeout = 0.15f; // 0.15f
     float fallTimeoutDelta;
 
     Vector3 moveInput;
@@ -59,7 +60,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float checkY;
     [SerializeField] float checkZ;
 
+    public TMP_Text checkPointTxt;
+
     bool isRun = false;
+    bool isChanged = false;
 
     void Awake()
     {
@@ -74,7 +78,6 @@ public class PlayerController : MonoBehaviour
         fallTimeoutDelta = fallTimeout;
 
         LoadCheckPoint();
-        isGrounded = true;
     }
 
     private void Update()
@@ -82,6 +85,17 @@ public class PlayerController : MonoBehaviour
         if (GameManager.instance != null) {
             FootstepAudioVolume = GameManager.sfxVolume;
         } else FootstepAudioVolume = 0.2f;
+
+        /* Switch TPS and FPS */
+        // If Camera distance under 0.5f, Player Character object is disabled
+        // And it Over 0.5f, Object is Enabled
+        if(!GameManager.isTPS && !isChanged) {
+            transform.GetChild(0).gameObject.SetActive(false);
+            isChanged = true;
+        } else if(GameManager.isTPS && isChanged) {
+            transform.GetChild(0).gameObject.SetActive(true);
+            isChanged = false;
+        }
 
         // check
         CheckPoint();
@@ -138,6 +152,8 @@ public class PlayerController : MonoBehaviour
         velocity.y = ySpeed;
 
         characterController.Move(velocity * Time.deltaTime);*/
+        
+        Debug.Log(isGrounded);
 }
 
     private void Move()
@@ -187,6 +203,7 @@ public class PlayerController : MonoBehaviour
                 ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
                 //animator.SetBool("Jump", true);
                 animator.CrossFade("JumpStart", 0f);
+                Debug.Log("Jump");
             }
 
             // Jump timeout
@@ -283,7 +300,7 @@ public class PlayerController : MonoBehaviour
         {
             if(!GameManager.isPause) {
                 pause.CallMenu();
-            } else pause.CloseMenu();
+            }
         }
     }
 
@@ -310,7 +327,8 @@ public class PlayerController : MonoBehaviour
 
             //other.gameObject.SetActive(false);
             other.transform.parent.gameObject.SetActive(false);
-            Debug.Log("dddd");
+
+            //StartCoroutine(CheckPointTxt());
         }
 
         if(other.gameObject.tag == "Victory")
@@ -324,5 +342,12 @@ public class PlayerController : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         
+    }
+
+    IEnumerator CheckPointTxt()
+    {
+        checkPointTxt.enabled = true;
+        yield return new WaitForSeconds(3f);
+        checkPointTxt.enabled = false;
     }
 }
