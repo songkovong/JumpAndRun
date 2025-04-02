@@ -16730,9 +16730,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 370920143}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: runSpeed
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: moveSpeed
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: checkPointTxt
       value: 
       objectReference: {fileID: 2140064498}
+    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: rotationSpeed
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: GroundedOffset
       value: -0.18
@@ -16740,6 +16752,10 @@ PrefabInstance:
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: GroundedRadius
       value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: runRotationSpeed
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: GroundLayers.m_Bits
@@ -38677,6 +38693,10 @@ PrefabInstance:
     - target: {fileID: 7524750082329670857, guid: 8db1a479f8aea7d4098025d0322376f5, type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8564463751943585885, guid: 8db1a479f8aea7d4098025d0322376f5, type: 3}
+      propertyPath: distance
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8564463751943585885, guid: 8db1a479f8aea7d4098025d0322376f5, type: 3}
       propertyPath: followTarget

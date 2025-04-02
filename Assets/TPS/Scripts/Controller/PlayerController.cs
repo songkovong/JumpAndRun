@@ -26,13 +26,13 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)] public float FootstepAudioVolume;
 
     [Header("Speed Settings")]
-    [SerializeField] float moveSpeed = 1.5f;
-    [SerializeField] float runSpeed = 4.8f;
+    [SerializeField] float moveSpeed = 2.5f; // 1.5f
+    [SerializeField] float runSpeed = 5.5f; //4.8f
     [SerializeField] float finalSpeed;
 
     [Header("Rotation Settings")]
-    [SerializeField] float rotationSpeed = 500f;
-    [SerializeField] float runRotationSpeed = 500f;
+    [SerializeField] float rotationSpeed = 700f; // 500f
+    [SerializeField] float runRotationSpeed = 1000f; // 500f
     [SerializeField] float finalRotationSpeed;
 
     [Header("Ground Check Settings")]
