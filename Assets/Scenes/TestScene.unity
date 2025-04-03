@@ -995,6 +995,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 340902007846868254, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: groundCheckRadius
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 340902007846868254, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: groundCheckOffset.y
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 340902007846868254, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: groundCheckOffset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4010589574319798129, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1038,6 +1050,26 @@ PrefabInstance:
     - target: {fileID: 7844630758153600004, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844630758153600004, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164162459122207021, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: m_Height
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164162459122207021, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: m_Center.y
+      value: 0.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164162459122207021, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164162459122207021, guid: 7c5ee712031766e418d8d59c981c23f8, type: 3}
+      propertyPath: m_SkinWidth
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -5,10 +5,11 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class SceneTip : MonoBehaviour
+public class LoadingSceneManager : MonoBehaviour
 {
-    public string nextScene = "Game Scene"; // 로드할 씬 이름
-    public TMP_Text tipText; // 팁을 표시할 UI Text
+    static string nextScene;
+    [SerializeField] Image loadingImage;
+    [SerializeField] TMP_Text tipText; // 팁을 표시할 UI Text
 
     private List<string> tips = new List<string>
     {
@@ -23,33 +24,44 @@ public class SceneTip : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(ShowLoadingTips());
-        //LoadNextScene(); // 이 메서드는 동작하는거 보면 코루틴이 안되는 느낌이 난다.
+        StartCoroutine(LoadSceneProgress());
     }
-
-    IEnumerator ShowLoadingTips()
-    {
-        Debug.Log("ShowLoadingTips");
-        ShuffleTips(); // 팁을 랜덤하게 섞음
-
-        for (int i = 0; i < 3; i++) // 3개의 팁을 순차적으로 표시
-        {
-            Debug.Log("Tip Text");
-            tipText.text = tips[i]; // 새로운 팁 표시
-            yield return new WaitForSeconds(3f); // 3초 대기
-        }
-
-        LoadNextScene(); // 3개 다 표시된 후 씬 전환
-    }
-
-    void LoadNextScene()
+ 
+    public static void LoadNextScene(string sceneName)
     {
         Debug.Log("LoadNextScene");
-        SceneManager.LoadScene(nextScene);
+        nextScene = sceneName;
+        SceneManager.LoadScene("Loading Scene");
+    }
+
+    IEnumerator LoadSceneProgress()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+        op.allowSceneActivation = false; // Load scene 90%
+
+        tipText.text = ShuffleTips(); // Shuffle Tips
+
+        float timer = 0f;
+
+        while(!op.isDone)
+        {
+            yield return null;
+
+            if(op.progress < 0.9f) {
+                loadingImage.fillAmount = op.progress;
+            } else {
+                timer += Time.unscaledDeltaTime / 3;
+                loadingImage.fillAmount = Mathf.Lerp(0.9f, 1f, timer);
+                if(loadingImage.fillAmount >= 1f) {
+                    op.allowSceneActivation = true;
+                    yield break;
+                }
+            }
+        }
     }
 
     // 팁 리스트를 랜덤하게 섞는 함수
-    void ShuffleTips()
+    string ShuffleTips()
     {
         Debug.Log("ShuffleTips");
         for (int i = 0; i < tips.Count; i++)
@@ -59,5 +71,7 @@ public class SceneTip : MonoBehaviour
             tips[i] = tips[randomIndex];
             tips[randomIndex] = temp;
         }
+        var index = Random.Range(0, tips.Count - 1);
+        return tips[index];
     }
 }

@@ -3,6 +3,7 @@ using StarterAssets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Timeline;
 
 /*
 ********************************************************************
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0f); // default = (0, 0.15, 0.08) (0, 0.1f, 0.04f)
     [SerializeField] LayerMask groundLayer; // default = Obstacles
 
+    /*[Header("Ground Check Settings 2")]
     [Tooltip("Useful for rough ground")]
     public float GroundedOffset = -0.18f; // -0.14f
 
@@ -47,16 +49,17 @@ public class PlayerController : MonoBehaviour
     public float GroundedRadius = 0.19f; // 0.28f
 
     [Tooltip("What layers the character uses as ground")]
-    public LayerMask GroundLayers; // Obstacles
+    public LayerMask GroundLayers; // Obstacles*/
 
     bool isGrounded = false;
-
     float ySpeed;
+
+    [Header("Gravity Settings")]
     [SerializeField] float groundGravity = -5f; // -0.5f
     [SerializeField] float fallGravity = -9.81f; // -9.81f
 
     [Header("Jump Settings")]
-    [SerializeField] float jumpHeight = 1f;
+    [SerializeField] float jumpHeight = 2f;
 
     [Header("Jump Timeout")]
     [SerializeField] float jumpTimeout = 0.5f;
@@ -75,6 +78,8 @@ public class PlayerController : MonoBehaviour
     CameraController cameraController;
     Animator animator;
     CharacterController characterController;
+    EnvironmentScanner environmentScanner;
+    ParkourController parkourController;
 
 
     [Header("Pause")]
@@ -85,22 +90,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float checkY;
     [SerializeField] float checkZ;
 
-    public TMP_Text checkPointTxt;
-
-
-    StarterAssetsInputs input;
-
-
+    [SerializeField] TMP_Text checkPointTxt;
 
     bool isRun = false;
     bool isChanged = false;
+    bool hasControl = true;
 
     void Awake()
     {
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        input = GetComponent<StarterAssetsInputs>();
+        environmentScanner = GetComponent<EnvironmentScanner>();
+        parkourController = GetComponent<ParkourController>();
     }
 
     void Start()
@@ -128,6 +130,8 @@ public class PlayerController : MonoBehaviour
             isChanged = false;
         }
 
+        if(!hasControl) return; // Active Parkour Action, It return
+
         // check
         CheckPoint();
 
@@ -142,62 +146,19 @@ public class PlayerController : MonoBehaviour
         PauseGame();
 
         // Gravity
-        /*if(isGrounded) {
-            ySpeed = groundGravity;
-
-            fallTimeoutDelta = fallTimeout;
-
-            animator.SetBool("Jump", false);
-            animator.SetBool("FreeFall", false);
-
-            // Jump
-            if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
-                ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
-                //animator.SetBool("Jump", true);
-                animator.CrossFade("JumpStart", 0f);
-            }
-
-            // Jump timeout
-            if (jumpTimeoutDelta >= 0.0f)
-            {
-                jumpTimeoutDelta -= Time.deltaTime;
-            }
-
-        } else {
-            jumpTimeoutDelta = jumpTimeout;
-
-            // Fall timeout
-            if (fallTimeoutDelta >= 0.0f) {
-                fallTimeoutDelta -= Time.deltaTime;
-            } else {
-                animator.SetBool("FreeFall", true);
-            }
-
-            ySpeed += fallGravity * Time.deltaTime;
-            //ySpeed += -15f * Time.deltaTime;
-        }*/
         GravityAndJump();
 
         // Player Move
         Move();
-        /*velocity = moveDir * finalSpeed;
-        velocity.y = ySpeed;
-
-        characterController.Move(velocity * Time.deltaTime);*/
-        
-        Debug.Log(isGrounded);
 }
 
     private void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        //float h = input.move.x;
-        //float v = input.move.y;
 
         // If player run, speed will be change
         finalSpeed = isRun ? runSpeed : moveSpeed;
-        //finalSpeed = input.sprint ? runSpeed : moveSpeed;
 
         // Calculate move vector and direction
         moveInput = (new Vector3(h, 0, v)).normalized;
@@ -235,11 +196,10 @@ public class PlayerController : MonoBehaviour
 
             // Jump
             if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
-            //if(input.jump && jumpTimeoutDelta <= 0f) {
                 ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
                 animator.SetBool("Jump", true);
-                //animator.CrossFade("JumpStart", 0f);
                 Debug.Log("Jump");
+                //animator.CrossFade("JumpStart", 0f);
             }
 
             // Jump timeout
@@ -261,14 +221,12 @@ public class PlayerController : MonoBehaviour
             //input.jump = false;
 
             ySpeed += fallGravity * Time.deltaTime;
-            //ySpeed += -15f * Time.deltaTime;
         }
     }
 
     private bool IsRun()
     {
         if(Input.GetKey(KeyCode.LeftShift)) {
-        //if(input.sprint) {
             isRun = true;
         } else {
             isRun = false;
@@ -283,31 +241,17 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Grounded", isGrounded);
     }
 
-    /*private void GroundedCheck()
+    public void SetControl(bool hasControl)
     {
-        // set sphere position, with offset
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-            transform.position.z);
-        isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-            QueryTriggerInteraction.Ignore);
+        this.hasControl = hasControl;
+        characterController.enabled = hasControl;
 
-        // update animator if using character
-        animator.SetBool("Grounded", isGrounded);
-    }*/
-
-    /*private void OnDrawGizmosSelected()
-    {
-        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
-
-        if (isGrounded) Gizmos.color = transparentGreen;
-        else Gizmos.color = transparentRed;
-
-        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-        Gizmos.DrawSphere(
-            new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-            GroundedRadius);
-    }*/
+        if(!hasControl)
+        {
+            animator.SetFloat("moveAmount", 0f);
+            targetRotation = transform.rotation;
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {
@@ -415,4 +359,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(3f);
         checkPointTxt.enabled = false;
     }
+
+    public float RotationSpeed => rotationSpeed;
 }
