@@ -130,7 +130,14 @@ public class PlayerController : MonoBehaviour
             isChanged = false;
         }
 
-        if(!hasControl) return; // Active Parkour Action, It return
+        // Active Parkour Action, It return
+        if(!hasControl) 
+        {
+            animator.SetBool("Jump", false);
+            animator.SetBool("FreeFall", false);
+            animator.SetBool("Grounded", isGrounded);
+            return;
+        }
 
         // check
         CheckPoint();

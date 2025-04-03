@@ -16895,7 +16895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_Center.y
-      value: 0.92
+      value: 0.93
       objectReference: {fileID: 0}
     - target: {fileID: 951508712892502678, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: m_Center.z
@@ -16984,6 +16984,10 @@ PrefabInstance:
     - target: {fileID: 7697587091117676525, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
       propertyPath: groundCheckOffset.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713716118219278907, guid: e98fba2260e94164f844faa1972eebb8, type: 3}
+      propertyPath: forwardRayLength
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

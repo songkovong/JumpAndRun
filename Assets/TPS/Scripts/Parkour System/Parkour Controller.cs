@@ -21,7 +21,7 @@ public class ParkourController : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButton("Jump") && !inAction)
+        if(Input.GetButtonDown("Jump") && !inAction)
         {
             var hitData = environmentScanner.ObstacleCheck();
 
