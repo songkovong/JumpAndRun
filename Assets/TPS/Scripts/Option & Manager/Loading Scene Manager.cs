@@ -14,7 +14,7 @@ public class LoadingSceneManager : MonoBehaviour
     private List<string> tips = new List<string>
     {
         "Tip: 마우스 스크롤을 이용해 카메라 거리를 조절할 수 있습니다.",
-        "Tip: 가까운 곳에 장애물이 있다면 스페이스 바를 통해 파쿠르를 사용할 수 있습니다.(미구현)",
+        "Tip: 가까운 곳에 장애물이 있다면 SPACE BAR를 통해 파쿠르를 사용할 수 있습니다.",
         "Tip: 특정 구역에 들어서면 자동으로 체크포인트가 활성화 됩니다.",
         "Tip: 카메라 거리를 가까이 하여 1인칭 시점으로도 플레이 할 수 있습니다.",
         "Tip: 당연하게도 이동은 WASD, 점프는 SPACE, 달리기는 SHIFT 입니다!",

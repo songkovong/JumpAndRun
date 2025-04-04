@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Speed Settings")]
     [SerializeField] float moveSpeed = 2.5f; // 1.5f
-    [SerializeField] float runSpeed = 5.5f; //4.8f
+    [SerializeField] float runSpeed = 6f; //4.8f
     [SerializeField] float finalSpeed;
 
     [Header("Rotation Settings")]
@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float finalRotationSpeed;
 
     [Header("Ground Check Settings")]
-    [SerializeField] float groundCheckRadius = 0.19f; // default = 0.2f
-    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.1f, 0f); // default = (0, 0.15, 0.08) (0, 0.1f, 0.04f)
+    [SerializeField] float groundCheckRadius = 0.2f; // default = 0.2f
+    [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.2f, 0f); // default = (0, 0.15, 0.08) (0, 0.1f, 0.04f)
     [SerializeField] LayerMask groundLayer; // default = Obstacles
 
     /*[Header("Ground Check Settings 2")]
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float fallGravity = -9.81f; // -9.81f
 
     [Header("Jump Settings")]
-    [SerializeField] float jumpHeight = 2f;
+    [SerializeField] float jumpHeight = 2.2f; // Root motion 으로 바꾸니까 점프 높이가 제대로 안되서 그냥 2.2 정도로 줬음
 
     [Header("Jump Timeout")]
     [SerializeField] float jumpTimeout = 0.5f;
@@ -90,11 +90,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float checkY;
     [SerializeField] float checkZ;
 
-    [SerializeField] TMP_Text checkPointTxt;
-
     bool isRun = false;
     bool isChanged = false;
     bool hasControl = true;
+
+    [SerializeField] TMP_Text checkPointText;
 
     void Awake()
     {
@@ -343,8 +343,7 @@ public class PlayerController : MonoBehaviour
 
             //other.gameObject.SetActive(false);
             other.transform.parent.gameObject.SetActive(false);
-
-            //StartCoroutine(CheckPointTxt());
+            StartCoroutine(ShowCheckPointText());
         }
 
         if(other.gameObject.tag == "Victory")
@@ -360,11 +359,11 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    IEnumerator CheckPointTxt()
+    private IEnumerator ShowCheckPointText()
     {
-        checkPointTxt.enabled = true;
+        checkPointText.gameObject.SetActive(true);
         yield return new WaitForSeconds(3f);
-        checkPointTxt.enabled = false;
+        checkPointText.gameObject.SetActive(false);
     }
 
     public float RotationSpeed => rotationSpeed;

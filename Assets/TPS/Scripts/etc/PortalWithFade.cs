@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -6,7 +6,7 @@ public class PortalWithFade : MonoBehaviour
 {
     public Transform destination;
     public Image fadeImage;
-    public MonoBehaviour playerController;
+    public PlayerController playerController;
     public Animator playerAnimator;
 
     [SerializeField] private float fadeDuration = 1f;
@@ -44,5 +44,62 @@ public class PortalWithFade : MonoBehaviour
         }
 
         if (playerController != null) playerController.enabled = true;
+    }
+}
+*/
+
+
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class PortalWithFade : MonoBehaviour
+{
+    public Transform destination;
+    public Image fadeImage;
+    PlayerController playerController;
+    Animator playerAnimator;
+
+    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private string portalAnimName = "Look Around";
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            StartCoroutine(TeleportWithFade(other));
+        }
+    }
+
+    private IEnumerator TeleportWithFade(Collider player)
+    {
+        if (playerController == null)
+            playerController = player.GetComponent<PlayerController>();
+
+        if (playerAnimator == null)
+            playerAnimator = player.GetComponent<Animator>();
+
+        playerController.SetControl(false);
+        playerAnimator.CrossFade(portalAnimName, 0.1f);
+
+        // Fade In
+        for (float i = 0; i <= 1f; i += Time.deltaTime / fadeDuration)
+        {
+            fadeImage.color = new Color(0, 0, 0, i);
+            yield return null;
+        }
+
+        // Teleport
+        player.transform.position = destination.position - new Vector3(0, 0.5f, 0);
+
+
+        // Fade Out
+        for (float i = 1f; i >= 0f; i -= Time.deltaTime / fadeDuration)
+        {
+            fadeImage.color = new Color(0, 0, 0, i);
+            yield return null;
+        }
+
+        playerController.SetControl(true);
     }
 }
