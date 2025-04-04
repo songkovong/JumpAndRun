@@ -32,7 +32,7 @@ public class SoundOption : MonoBehaviour
     public void FindSliders()
     {
         // Find Slider
-        BGMSlider = GameObject.FindWithTag("BGMSlider")?.GetComponent<Slider>();
+        BGMSlider = GameObject.FindWithTag("BGMSlider")?.GetComponent<Slider>(); 
         SFXSlider = GameObject.FindWithTag("SFXSlider")?.GetComponent<Slider>();
 
         if (BGMSlider != null)

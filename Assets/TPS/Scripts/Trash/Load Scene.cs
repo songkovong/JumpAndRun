@@ -6,6 +6,7 @@ public class LoadScene : MonoBehaviour
 {
     public void MainScene()
     {
+        GameManager.isPause = false;
         LoadingSceneManager.LoadNextScene("Main Scene");
     }
 

@@ -26,7 +26,22 @@ public class ParkourController : MonoBehaviour
         {
             var hitData = environmentScanner.ObstacleCheck();
 
-            if(hitData.effectiveHitFound)
+            //if(hitData.effectiveHitFound)
+            if(hitData.effectiveHitFound && hitData.heightHitFound)
+            {
+                if(hitData.effectiveHit.transform.Equals(hitData.heightHit.transform))
+                {
+                    foreach(var action in parkourActions)
+                    {
+                        if(action.CheckIfPossible(hitData, transform))
+                        {
+                            StartCoroutine(DoParkourAction(action));
+                            break;
+                        }
+                    }
+                }
+            }
+            /*if(hitData.effectiveHit.transform.Equals(hitData.heightHit.transform))
             {
                 foreach(var action in parkourActions)
                 {
@@ -36,7 +51,7 @@ public class ParkourController : MonoBehaviour
                         break;
                     }
                 }
-            }
+            }*/
 
             /*if(hitData.forwardHitFound)
             {
@@ -74,9 +89,9 @@ public class ParkourController : MonoBehaviour
             timer += Time.deltaTime;
 
             // Rotate the player towards the obstacle
-            if(action.RotateToObstacle) 
+            /*if(action.RotateToObstacle) 
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, action.TargetRotation, 
-                    playerController.RotationSpeed * Time.deltaTime);
+                    playerController.RotationSpeed * Time.deltaTime);*/
 
             if(action.EnableTargetMatching) {
                 MatchTarget(action);

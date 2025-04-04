@@ -4,8 +4,8 @@ using UnityEngine.ProBuilder.MeshOperations;
 public class EnvironmentScanner : MonoBehaviour
 {
     [SerializeField] Vector3 forwardRayOffset = new Vector3(0, 0.25f, 0);
-    [SerializeField] Vector3 middleRayOffset = new Vector3(0, 0.5f, 0);
-    [SerializeField] Vector3 topRayOffset = new Vector3(0, 1.3f, 0);
+    [SerializeField] Vector3 middleRayOffset = new Vector3(0, 0.95f, 0); // 0.5
+    [SerializeField] Vector3 topRayOffset = new Vector3(0, 1.65f, 0); // 1.3
     [SerializeField] float forwardRayLength = 0.8f;
     [SerializeField] float heightRayLength = 5f;
     [SerializeField] LayerMask obstacleLayer;
@@ -46,7 +46,7 @@ public class EnvironmentScanner : MonoBehaviour
             hitData.effectiveHitFound = false;
         }
 
-        if(hitData.effectiveHitFound)
+        /*if(hitData.effectiveHitFound)
         {
             var heightOrigin = hitData.effectiveHit.point + Vector3.up * heightRayLength;
 
@@ -54,7 +54,17 @@ public class EnvironmentScanner : MonoBehaviour
                 out hitData.heightHit, heightRayLength, obstacleLayer);
 
             Debug.DrawRay(heightOrigin, Vector3.down * heightRayLength, (hitData.heightHitFound) ? Color.red : Color.white);
-        }
+            Debug.Log("Hit = " + hitData.effectiveHit.transform);
+        }*/
+        
+        var FRayLength = 0.3f;
+        var HRayLength = 3f;
+        var heightOrigin = transform.position + transform.forward * FRayLength + (Vector3.up * HRayLength);
+        var rayLength = HRayLength - 0.25f;
+
+        hitData.heightHitFound = Physics.Raycast(heightOrigin, Vector3.down, out hitData.heightHit, rayLength, obstacleLayer);
+
+        Debug.DrawRay(heightOrigin, Vector3.down * rayLength, (hitData.heightHitFound) ? Color.red : Color.white);
 
         /*if(hitData.forwardHitFound)
         {

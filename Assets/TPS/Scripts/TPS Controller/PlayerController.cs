@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Pause")]
-    [SerializeField] Pause pause;
+    [SerializeField] OptionManager optionManager;
 
     [Header("Check Point")]
     [SerializeField] float checkX;
@@ -315,8 +315,9 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(!GameManager.isPause) {
-                pause.CallMenu();
-            }
+                optionManager.CallMenu();
+                optionManager.FindSliders();
+            } else optionManager.CloseMenu();
         }
     }
 
