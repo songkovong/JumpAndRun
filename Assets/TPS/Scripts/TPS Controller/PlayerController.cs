@@ -5,20 +5,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
 
-/*
-********************************************************************
-Character Controller Value
 
-    Slope limit: 45
-    Step Offset: 0.3
-    Skin width: 0.02
-    Min Move Distance: 0.001
-    Center: 0, 0.93, 0
-    Radius: 0.2
-    Height: 1.8
+// Character Controller Value
+//     Slope limit: 45
+//     Step Offset: 0.3
+//     Skin width: 0.02
+//     Min Move Distance: 0.001
+//     Center: 0, 0.93, 0
+//     Radius: 0.2
+//     Height: 1.8
 
-********************************************************************
-*/
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,45 +23,49 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1)] public float FootstepAudioVolume;
 
     [Header("Speed Settings")]
-    [SerializeField] float moveSpeed = 2.5f; // 1.5f
-    [SerializeField] float runSpeed = 6f; //4.8f
+    [Tooltip("Player move speed")]
+    [SerializeField] float moveSpeed = 3f; // 1.5f
+    [Tooltip("Player run speed")]
+    [SerializeField] float runSpeed = 8f; //4.8f
+    [Tooltip("Final speed determine Player speed")]
     [SerializeField] float finalSpeed;
 
     [Header("Rotation Settings")]
+    [Tooltip("Default Player rotation speed")]
     [SerializeField] float rotationSpeed = 700f; // 500f
+    [Tooltip("Player Run rotation speed")]
     [SerializeField] float runRotationSpeed = 1000f; // 500f
+    [Tooltip("Final rotation speed determine Player rotation speed")]
     [SerializeField] float finalRotationSpeed;
 
     [Header("Ground Check Settings")]
+    [Tooltip("Ground check radius")]
     [SerializeField] float groundCheckRadius = 0.2f; // default = 0.2f
+    [Tooltip("Ground check offset")]
     [SerializeField] Vector3 groundCheckOffset = new Vector3(0, 0.2f, 0f); // default = (0, 0.15, 0.08) (0, 0.1f, 0.04f)
+    [Tooltip("Ground check layer")]
     [SerializeField] LayerMask groundLayer; // default = Obstacles
-
-    /*[Header("Ground Check Settings 2")]
-    [Tooltip("Useful for rough ground")]
-    public float GroundedOffset = -0.18f; // -0.14f
-
-    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-    public float GroundedRadius = 0.19f; // 0.28f
-
-    [Tooltip("What layers the character uses as ground")]
-    public LayerMask GroundLayers; // Obstacles*/
 
     bool isGrounded = false;
     float ySpeed;
 
     [Header("Gravity Settings")]
+    [Tooltip("If Player in ground")]
     [SerializeField] float groundGravity = -5f; // -0.5f
+    [Tooltip("If Player fall")]
     [SerializeField] float fallGravity = -9.81f; // -9.81f
 
     [Header("Jump Settings")]
-    [SerializeField] float jumpHeight = 2.2f; // Root motion 으로 바꾸니까 점프 높이가 제대로 안되서 그냥 2.2 정도로 줬음
+    [Tooltip("Player jump height")]
+    [SerializeField] float jumpHeight = 2.1f; // Root motion 으로 바꾸니까 점프 높이가 제대로 안되서 그냥 2.2 정도로 줬음
 
     [Header("Jump Timeout")]
-    [SerializeField] float jumpTimeout = 0.5f;
+    [Tooltip("Timeout Player can't continuous jump")]
+    [SerializeField] float jumpTimeout = 0.2f;
     float jumpTimeoutDelta;
 
     [Header("Fall Timeout")]
+    [Tooltip("Timeout Player fall")]
     [SerializeField] float fallTimeout = 0.15f; // 0.15f
     float fallTimeoutDelta;
 
@@ -78,22 +78,21 @@ public class PlayerController : MonoBehaviour
     CameraController cameraController;
     Animator animator;
     CharacterController characterController;
-    EnvironmentScanner environmentScanner;
-    ParkourController parkourController;
-
 
     [Header("Pause")]
+    [Tooltip("Pause Object")]
     [SerializeField] OptionManager optionManager;
 
-    [Header("Check Point")]
-    [SerializeField] float checkX;
-    [SerializeField] float checkY;
-    [SerializeField] float checkZ;
+    // player checkpoint vector
+    float checkX;
+    float checkY;
+    float checkZ;
 
     bool isRun = false;
     bool isChanged = false;
     bool hasControl = true;
 
+    [Header("Checkpoint Text")]
     [SerializeField] TMP_Text checkPointText;
 
     void Awake()
@@ -101,8 +100,6 @@ public class PlayerController : MonoBehaviour
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        environmentScanner = GetComponent<EnvironmentScanner>();
-        parkourController = GetComponent<ParkourController>();
     }
 
     void Start()
@@ -225,8 +222,6 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("FreeFall", true);
             }
 
-            //input.jump = false;
-
             ySpeed += fallGravity * Time.deltaTime;
         }
     }
@@ -342,7 +337,6 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
 
-            //other.gameObject.SetActive(false);
             other.transform.parent.gameObject.SetActive(false);
             StartCoroutine(ShowCheckPointText());
         }

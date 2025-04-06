@@ -89,9 +89,9 @@ public class ParkourController : MonoBehaviour
             timer += Time.deltaTime;
 
             // Rotate the player towards the obstacle
-            /*if(action.RotateToObstacle) 
+            if(action.RotateToObstacle) 
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, action.TargetRotation, 
-                    playerController.RotationSpeed * Time.deltaTime);*/
+                    playerController.RotationSpeed * Time.deltaTime);
 
             if(action.EnableTargetMatching) {
                 MatchTarget(action);
