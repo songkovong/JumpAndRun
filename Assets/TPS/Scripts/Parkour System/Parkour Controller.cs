@@ -26,10 +26,10 @@ public class ParkourController : MonoBehaviour
         {
             var hitData = environmentScanner.ObstacleCheck();
 
-            //if(hitData.effectiveHitFound)
-            if(hitData.effectiveHitFound && hitData.heightHitFound)
+            // if(hitData.obstacleHitFound)
+            if(hitData.obstacleHitFound && hitData.heightHitFound)
             {
-                if(hitData.effectiveHit.transform.Equals(hitData.heightHit.transform))
+                if(hitData.obstacleHit.transform.Equals(hitData.heightHit.transform))
                 {
                     foreach(var action in parkourActions)
                     {
@@ -72,8 +72,6 @@ public class ParkourController : MonoBehaviour
         inAction = true;
         playerController.SetControl(false);
 
-        Debug.Log(action.Animname);
-        
         // smoothly
         animator.CrossFade(action.Animname, 0.05f); // 0.2f is too slow
         yield return null;

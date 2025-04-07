@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Default Player rotation speed")]
     [SerializeField] float rotationSpeed = 700f; // 500f
     [Tooltip("Player Run rotation speed")]
-    [SerializeField] float runRotationSpeed = 1000f; // 500f
+    [SerializeField] float runRotationSpeed = 850; // 500f
     [Tooltip("Final rotation speed determine Player rotation speed")]
     [SerializeField] float finalRotationSpeed;
 
@@ -57,11 +57,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump Settings")]
     [Tooltip("Player jump height")]
-    [SerializeField] float jumpHeight = 2.1f; // Root motion 으로 바꾸니까 점프 높이가 제대로 안되서 그냥 2.2 정도로 줬음
+    [SerializeField] float jumpHeight = 2.8f; // Root motion 으로 바꾸니까 점프 높이가 제대로 안되서 그냥 2.2 정도로 줬음
 
     [Header("Jump Timeout")]
     [Tooltip("Timeout Player can't continuous jump")]
-    [SerializeField] float jumpTimeout = 0.2f;
+    [SerializeField] float jumpTimeout = 0.1f;
     float jumpTimeoutDelta;
 
     [Header("Fall Timeout")]
@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+        InitializeValue();
     }
 
     void Start()
@@ -154,7 +155,12 @@ public class PlayerController : MonoBehaviour
 
         // Player Move
         Move();
-}
+    }
+
+    void InitializeValue()
+    {
+
+    }
 
     private void Move()
     {
@@ -201,9 +207,8 @@ public class PlayerController : MonoBehaviour
             // Jump
             if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
                 ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
-                animator.SetBool("Jump", true);
-                Debug.Log("Jump");
-                //animator.CrossFade("JumpStart", 0f);
+                // animator.SetBool("Jump", true);
+                animator.CrossFade("JumpStart", 0f);
             }
 
             // Jump timeout
@@ -276,7 +281,7 @@ public class PlayerController : MonoBehaviour
     private void OnLand(AnimationEvent animationEvent)
     {
         // If over 0.5f, Land clip doesn't play land sound
-        //if (animationEvent.animatorClipInfo.weight > 0.5f)
+        if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
             AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(characterController.center), FootstepAudioVolume);
         }
@@ -297,7 +302,7 @@ public class PlayerController : MonoBehaviour
     {
         checkX = PlayerPrefs.GetFloat("Check X", 0f);
         checkY = PlayerPrefs.GetFloat("Check Y", 0f);
-        checkZ = PlayerPrefs.GetFloat("Check Z", 0f);
+        checkZ = PlayerPrefs.GetFloat("Check Z", -25f);
 
         characterController.enabled = false;
         transform.position = new Vector3(checkX, checkY, checkZ);
@@ -337,7 +342,7 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
 
-            other.transform.parent.gameObject.SetActive(false);
+            //other.transform.parent.gameObject.SetActive(false);
             StartCoroutine(ShowCheckPointText());
         }
 

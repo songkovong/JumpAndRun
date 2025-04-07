@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour
     // TPS setting
     public static bool isTPS;
 
-    
+    GraphicManager graphicManager;
+
     void Awake()
     {
         if (instance != null) // If Already exist
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
         FrameRateControl();
         LoadVolumeSettings();
         LoadSensSettings();
+
+        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("QLevel", 1));
     }
 
     void FrameRateControl()

@@ -63,14 +63,6 @@ public class LoadingSceneManager : MonoBehaviour
     // 팁 리스트를 랜덤하게 섞는 함수
     string ShuffleTips()
     {
-        Debug.Log("ShuffleTips");
-        for (int i = 0; i < tips.Count; i++)
-        {
-            int randomIndex = Random.Range(0, tips.Count);
-            string temp = tips[i];
-            tips[i] = tips[randomIndex];
-            tips[randomIndex] = temp;
-        }
         var index = Random.Range(0, tips.Count - 1);
         return tips[index];
     }

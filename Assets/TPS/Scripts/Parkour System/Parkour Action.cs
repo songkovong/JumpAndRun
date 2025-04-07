@@ -25,7 +25,6 @@ public class ParkourAction : ScriptableObject
     public bool CheckIfPossible(ObstacleHitData hitData, Transform player)
     {
         float height = hitData.heightHit.point.y - player.position.y;
-        Debug.Log("Height = " + height);
 
         if(height < minHeight || height > maxHeight) return false;
 
@@ -38,7 +37,7 @@ public class ParkourAction : ScriptableObject
         if (rotateToObstacle)
         {
             // 장애물의 법선 반대 방향 (정면이 그쪽을 향하게)
-            var targetDirection = -hitData.effectiveHit.normal;
+            var targetDirection = -hitData.obstacleHit.normal;
 
             // Y축 평면으로 투영해서 수직 회전 제거
             targetDirection.y = 0f;
