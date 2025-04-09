@@ -13,9 +13,9 @@ public class CameraController : MonoBehaviour
     [Tooltip("Camera vertical sensitivity")]
     [SerializeField] float verticalSensitivityScale;
     [Tooltip("Minimum vertical angle")]
-    [SerializeField] float minVerticalAngle = -20f;
+    [SerializeField] float minVerticalAngle = -75f; // 20f
     [Tooltip("Maximum vertical angle")]
-    [SerializeField] float maxVerticalAngle = 45f;
+    [SerializeField] float maxVerticalAngle = 70f; // 45f
     [Tooltip("Invert X (Vertical camera move)")]
     [SerializeField] bool invertX;
     [Tooltip("Invert Y (Horizontal camera move)")]

@@ -61,13 +61,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump Timeout")]
     [Tooltip("Timeout Player can't continuous jump")]
-    [SerializeField] float jumpTimeout = 0.1f;
+    [SerializeField] float jumpTimeout = 0f;
     float jumpTimeoutDelta;
 
     [Header("Fall Timeout")]
     [Tooltip("Timeout Player fall")]
     [SerializeField] float fallTimeout = 0.15f; // 0.15f
     float fallTimeoutDelta;
+
+    float resetTimeout = 2f;
+    float resetHold = 0f;
+    bool resetTriggered = false;
 
     Vector3 moveInput;
     Vector3 moveDir;
@@ -100,7 +104,7 @@ public class PlayerController : MonoBehaviour
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        InitializeValue();
+        // InitializeValue();
     }
 
     void Start()
@@ -137,8 +141,20 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // check
-        CheckPoint();
+        // Activate Checkpoint
+        if(Input.GetKey(KeyCode.R))
+        {
+            resetHold += Time.deltaTime;
+            Debug.Log("reset : " + resetHold);
+
+            if(resetHold >= resetTimeout && !resetTriggered) {
+                CheckPoint();
+                resetTriggered = true;
+            }
+        } else{
+            resetHold = 0f;
+            resetTriggered = false;
+        }
 
         // Is Player Run?
         IsRun();
@@ -205,7 +221,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("FreeFall", false);
 
             // Jump
-            if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f) {
+            if(Input.GetButtonDown("Jump") && jumpTimeoutDelta <= 0f && hasControl) {
                 ySpeed = Mathf.Sqrt(-jumpHeight * 2 * fallGravity);
                 // animator.SetBool("Jump", true);
                 animator.CrossFade("JumpStart", 0f);
@@ -215,7 +231,8 @@ public class PlayerController : MonoBehaviour
             if (jumpTimeoutDelta >= 0.0f)
             {
                 jumpTimeoutDelta -= Time.deltaTime;
-            }
+                Debug.Log("Jump = " + (jumpTimeoutDelta >= 0.0f));
+            } else Debug.Log("Jump = " + (jumpTimeoutDelta < 0.0f));
 
         } else {
             jumpTimeoutDelta = jumpTimeout;
@@ -289,13 +306,11 @@ public class PlayerController : MonoBehaviour
 
     void CheckPoint()
     {
-        if(Input.GetKey(KeyCode.R))
-        {
-            characterController.enabled = false;
-            transform.position = new Vector3(checkX, checkY, checkZ);
-            //transform.eulerAngles = new Vector3(checkX, checkY, checkZ);
-            characterController.enabled = true;
-        }
+        characterController.enabled = false;
+        transform.position = new Vector3(checkX, checkY, checkZ);
+        //transform.eulerAngles = new Vector3(checkX, checkY, checkZ);
+        characterController.enabled = true;
+        StartCoroutine(ShowCheckPointActiveText());
     }
 
     void LoadCheckPoint()
@@ -342,7 +357,7 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("Check Z", checkZ);
             PlayerPrefs.Save();
 
-            //other.transform.parent.gameObject.SetActive(false);
+            other.transform.gameObject.SetActive(false);
             StartCoroutine(ShowCheckPointText());
         }
 
@@ -361,6 +376,14 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ShowCheckPointText()
     {
+        checkPointText.SetText("Checkpoint Activated!");
+        checkPointText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        checkPointText.gameObject.SetActive(false);
+    }
+    private IEnumerator ShowCheckPointActiveText()
+    {
+        checkPointText.SetText("Checkpoint Loaded!");
         checkPointText.gameObject.SetActive(true);
         yield return new WaitForSeconds(3f);
         checkPointText.gameObject.SetActive(false);
