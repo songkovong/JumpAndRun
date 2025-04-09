@@ -74,11 +74,19 @@ public class ParkourController : MonoBehaviour
 
         // smoothly
         animator.CrossFade(action.Animname, 0.05f); // 0.2f is too slow
-        yield return null;
+        
+        // 프레임이 떨어지면 GetNextAnimatorStateInfo(0)가 다음 이름을 못받아오는 문제가 발생
+        // yield return null;
 
-        var animState = animator.GetNextAnimatorStateInfo(0);
-        if(!animState.IsName(action.Animname))
-            Debug.LogError("The parkour animation is wrong!");
+        // // var animState = animator.GetNextAnimatorStateInfo(0);
+        // // if(!animState.IsName(action.Animname)){
+        // //     Debug.Log("The parkour animation is wrong!");
+        // // } 
+
+        // Wait until the animation transition is complete and the state with that name is played.
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName(action.Animname));
+
+        var animState = animator.GetCurrentAnimatorStateInfo(0);
 
         // Run in parallel unlike Waitforseconds
         float timer = 0f;
